@@ -1,0 +1,236 @@
+[
+  {
+    "firm_information": {
+      "firm_name": "Apex Trader Funding",
+      "firm_logo_url": "https://example.com/apex.png",
+      "firm_url": "https://apextraderfunding.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K Full",
+      "account_size": 25000,
+      "price": 167,
+      "sale_price": 33,
+      "profit_split": 0.9,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1500,
+      "drawdown_type": "Trailing",
+      "activation_fee": 25
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 7,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "Bulenox",
+      "firm_logo_url": "https://example.com/bulenox.png",
+      "firm_url": "https://bulenox.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 199,
+      "sale_price": 39,
+      "profit_split": 0.8,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 25
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "Topstep",
+      "firm_logo_url": "https://example.com/topstep.png",
+      "firm_url": "https://topstep.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "50K",
+      "account_size": 50000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.8,
+      "profit_target": 3000,
+      "daily_drawdown": null,
+      "max_drawdown": 2000,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "Take Profit Trader",
+      "firm_logo_url": "https://example.com/tpt.png",
+      "firm_url": "https://takeprofittrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.8,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 2000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "TradeDay",
+      "firm_logo_url": "https://example.com/tradeday.png",
+      "firm_url": "https://tradeday.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.8,
+      "profit_target": 1000,
+      "daily_drawdown": null,
+      "max_drawdown": 1000,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "My Funded Futures",
+      "firm_logo_url": "https://example.com/mff.png",
+      "firm_url": "https://myfundedfutures.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 139,
+      "sale_price": 27,
+      "profit_split": 0.8,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1000,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "Earn2Trade",
+      "firm_logo_url": "https://example.com/e2t.png",
+      "firm_url": "https://earn2trade.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.8,
+      "profit_target": 1250,
+      "daily_drawdown": null,
+      "max_drawdown": 1250,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": 30,
+      "allowed_instruments": ["Futures", "Forex"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "TickTickTrader",
+      "firm_logo_url": "https://example.com/ticktick.png",
+      "firm_url": "https://tickticktrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.8,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1500,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  },
+  {
+    "firm_information": {
+      "firm_name": "Lucid",
+      "firm_logo_url": "https://example.com/lucid.png",
+      "firm_url": "https://lucidtrading.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 149,
+      "sale_price": 29,
+      "profit_split": 0.9,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1500,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": ["Futures"],
+      "scaling_plan": true
+    }
+  }
+]

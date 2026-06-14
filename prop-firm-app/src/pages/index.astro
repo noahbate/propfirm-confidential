@@ -1,17 +1,143 @@
 ---
-
+// /Users/hermes/projects/propfirm-confidential/prop-firm-app/src/pages/index.astro
+const BACKEND_URL = 'http://localhost:8000';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Prop Firm Confidential</title>
+  </head>
+
+  <body>
+    <main id="app" class="max-w-6xl mx-auto p-4 sm:p-6">
+      <h1 class="text-2xl font-semibold mb-4">Prop Firm Confidential</h1>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <input id="search" placeholder="Search firms or accounts" class="border rounded px-3 py-2 w-full sm:w-80" />
+        <a href="/compare" class="text-sm underline">Compare firms</a>
+        <div class="text-sm text-gray-600">
+          Sort by:
+          <button data-sort="account_size" class="underline">Account size</button> •
+          <button data-sort="price" class="underline">Price</button> •
+          <button data-sort="sale_price" class="underline">Sale price</button> •
+          <button data-sort="profit_target" class="underline">Profit target</button> •
+          <button data-sort="max_drawdown" class="underline">Max drawdown</button> •
+          <button data-sort="activation_fee" class="underline">Activation fee</button>
+          <span id="dir" class="ml-1">(asc)</span>
+        </div>
+      </div>
+      <div class="overflow-x-auto border rounded">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Firm</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sale</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profit split</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profit target</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max drawdown</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activation fee</th>
+              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drawdown</th>
+            </tr>
+          </thead>
+          <tbody id="rows" class="bg-white divide-y divide-gray-200">
+            <tr><td colspan="9" class="px-4 py-4 text-center text-sm text-gray-500">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script is:inline>
+      const backendUrl = 'http://localhost:8000/api/prop-firms';
+      const rows = document.getElementById('rows');
+      const searchInput = document.getElementById('search');
+      const dirLabel = document.getElementById('dir');
+      let state = { items: [], sortKey: 'account_size', sortDir: 'asc' };
+
+      function fmtNum(n) {
+        return typeof n === 'number' ? n : '—';
+      }
+
+      function fmtSplit(n) {
+        return typeof n === 'number' ? Math.round(n * 100) + '%' : '—';
+      }
+
+      function render(items) {
+        rows.innerHTML = '';
+        if (items.length === 0) {
+          rows.innerHTML = '<tr><td colspan="9" class="px-4 py-4 text-center text-sm text-gray-500">No matching accounts.</td></tr>';
+          return;
+        }
+        const frag = document.createDocumentFragment();
+        items.forEach((item) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-gray-50';
+          tr.innerHTML = `
+            <td class="px-4 py-3 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <img src="${item.firm_information.firm_logo_url}" alt="" class="h-8 w-8 rounded-full object-cover" />
+                <div>
+                  <div class="text-sm font-medium text-gray-900">${item.firm_information.firm_name}</div>
+                  <div class="text-xs text-gray-500">${item.rules_and_parameters.allowed_instruments.join(', ')}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${item.account_details.account_name}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.price)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.sale_price)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtSplit(item.account_details.profit_split)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${item.account_details.profit_target}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.max_drawdown)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.activation_fee)}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${item.account_details.drawdown_type}</td>
+          `;
+          frag.appendChild(tr);
+        });
+        rows.appendChild(frag);
+      }
+
+      function sortKey(key) {
+        state.sortDir = state.sortKey === key && state.sortDir === 'asc' ? 'desc' : 'asc';
+        state.sortKey = key;
+        dirLabel.textContent = `(${state.sortDir})`;
+        apply();
+      }
+
+      function apply() {
+        const q = (searchInput.value || '').trim().toLowerCase();
+        const list = state.items.filter((item) => {
+          if (!q) return true;
+          const text = [item.firm_information.firm_name, item.account_details.account_name].join(' ').toLowerCase();
+          return text.includes(q);
+        });
+        list.sort((a, b) => {
+          const av = a.account_details[state.sortKey];
+          const bv = b.account_details[state.sortKey];
+          const aNum = typeof av === 'number' ? av : 0;
+          const bNum = typeof bv === 'number' ? bv : 0;
+          return state.sortDir === 'asc' ? aNum - bNum : bNum - aNum;
+        });
+        render(list);
+      }
+
+      async function init() {
+        const res = await fetch(backendUrl);
+        const data = await res.json();
+        state.items = Array.isArray(data) ? data : [];
+        apply();
+      }
+
+      searchInput.addEventListener('input', apply);
+      document.querySelectorAll('[data-sort]').forEach((btn) => {
+        btn.addEventListener('click', () => sortKey(btn.dataset.sort));
+      });
+      init();
+    </script>
+    <script is:inline>
+      window.__BACKEND_URL__ = 'http://localhost:8000';
+    </script>

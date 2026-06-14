@@ -1,0 +1,171 @@
+---
+// /Users/hermes/projects/propfirm-confidential/prop-firm-app/src/pages/compare.astro
+const BACKEND_URL = 'http://localhost:8000';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Compare — Prop Firm Confidential</title>
+  </head>
+
+  <body>
+    <main class="max-w-6xl mx-auto p-4 sm:p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold">Compare Prop Firms</h1>
+        <a href="/" class="text-sm underline">Back to table</a>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-sm text-gray-600 mb-3">Select up to 3 firms to compare side by side.</p>
+        <div id="selector" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <div id="comparison" class="overflow-x-auto border rounded"></div>
+    </main>
+
+    <script is:inline>
+      const backendUrl = 'http://localhost:8000/api/prop-firms';
+      const MAX = 3;
+      let selected = new Set();
+
+      function badge(name, active) {
+        const btn = document.createElement('button');
+        btn.textContent = name;
+        btn.className = active
+          ? 'px-3 py-1.5 text-sm rounded bg-black text-white'
+          : 'px-3 py-1.5 text-sm rounded border';
+        btn.addEventListener('click', () => toggle(name, btn));
+        return btn;
+      }
+
+      function toggle(name, btn) {
+        if (selected.has(name)) {
+          selected.delete(name);
+          btn.className = 'px-3 py-1.5 text-sm rounded border';
+        } else {
+          if (selected.size >= MAX) return;
+          selected.add(name);
+          btn.className = 'px-3 py-1.5 text-sm rounded bg-black text-white';
+        }
+        renderComparison();
+      }
+
+      function fmtNum(n) {
+        return typeof n === 'number' ? n : '—';
+      }
+
+      function fmtSplit(n) {
+        return typeof n === 'number' ? Math.round(n * 100) + '%' : '—';
+      }
+
+      function renderComparison() {
+        const wrap = document.getElementById('comparison');
+        wrap.innerHTML = '';
+        if (selected.size === 0) {
+          wrap.innerHTML = '<div class="p-6 text-center text-sm text-gray-500">Pick firms above to see the side-by-side view.</div>';
+          return;
+        }
+        const firms = window.__PROP_FIRMS__ || [];
+        const items = firms.filter(f => selected.has(f.firm_information.firm_name));
+        if (!items.length) return;
+
+        const table = document.createElement('table');
+        table.className = 'min-w-full divide-y divide-gray-200';
+        const thead = document.createElement('thead');
+        const headRow = document.createElement('tr');
+        const corner = document.createElement('th');
+        corner.className = 'px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50';
+        corner.textContent = 'Metric';
+        headRow.appendChild(corner);
+        items.forEach(item => {
+          const th = document.createElement('th');
+          th.className = 'px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50';
+          th.innerHTML = `<div class="flex items-center gap-2"><img src="${item.firm_information.firm_logo_url}" alt="" class="h-6 w-6 rounded-full object-cover" /><span>${item.firm_information.firm_name}</span></div>`;
+          headRow.appendChild(th);
+        });
+        thead.appendChild(headRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        tbody.className = 'bg-white divide-y divide-gray-200';
+
+        const rows = [
+          { label: 'Account', key: 'account_name' },
+          { label: 'Price', key: 'price' },
+          { label: 'Sale price', key: 'sale_price' },
+          { label: 'Profit split', key: 'profit_split', fmt: fmtSplit },
+          { label: 'Profit target', key: 'profit_target' },
+          { label: 'Max drawdown', key: 'max_drawdown' },
+          { label: 'Activation fee', key: 'activation_fee' },
+          { label: 'Drawdown', key: 'drawdown_type' },
+          { label: 'Instruments', key: 'allowed_instruments', transform: (v) => Array.isArray(v) ? v.join(', ') : v },
+          { label: 'Scaling plan', key: 'scaling_plan' },
+          { label: 'Min trading days', key: 'min_trading_days' }
+        ];
+
+        rows.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-gray-50';
+
+          const tdLabel = document.createElement('td');
+          tdLabel.className = 'px-4 py-3 text-sm font-medium text-gray-900 whitespace-nowrap bg-gray-50';
+          tdLabel.textContent = r.label;
+          tr.appendChild(tdLabel);
+
+          const vals = items.map(item => {
+            if (r.key === 'allowed_instruments') return item.rules_and_parameters.allowed_instruments || '—';
+            if (r.key === 'scaling_plan') return item.rules_and_parameters.scaling_plan ? 'Yes' : 'No';
+            return item.account_details[r.key];
+          });
+
+          const numeric = vals.every(v => typeof v === 'number');
+          if (numeric) {
+            const min = Math.min(...vals);
+            vals.forEach((v, idx) => {
+              const td = document.createElement('td');
+              td.className = 'px-4 py-3 text-sm whitespace-nowrap';
+              td.textContent = fmtNum(v);
+              if (v === min && vals.length > 1) td.className += ' font-semibold text-green-700';
+              tr.appendChild(td);
+            });
+          } else {
+            vals.forEach(v => {
+              const td = document.createElement('td');
+              td.className = 'px-4 py-3 text-sm whitespace-nowrap';
+              td.textContent = typeof r.fmt === 'function' ? r.fmt(v) : (typeof v === 'number' ? fmtNum(v) : (v ?? '—'));
+              tr.appendChild(td);
+            });
+          }
+
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        wrap.appendChild(table);
+      }
+
+      async function init() {
+        const sel = document.getElementById('selector');
+        try {
+          const res = await fetch(backendUrl);
+          const data = await res.json();
+          const items = Array.isArray(data) ? data : [];
+          window.__PROP_FIRMS__ = items;
+          items.forEach(item => {
+            sel.appendChild(badge(item.firm_information.firm_name, false));
+          });
+        } catch (e) {
+          sel.textContent = 'Failed to load firms.';
+        }
+        renderComparison();
+      }
+
+      init();
+    </script>
+  </body>
+</html>

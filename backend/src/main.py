@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import json
 from pathlib import Path
+import os
 
 app = FastAPI()
 app.add_middleware(
@@ -12,16 +14,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_PATH = PROJECT_ROOT / "backend" / "prop_firms.json"
+DATA_PATH = Path(__file__).resolve().parents[1] / "prop_firms.json"
+
 
 @app.get("/api/prop-firms")
-def get_prop_firms():
-    resolved = DATA_PATH.resolve()
-    print("DATA_PATH", resolved, "exists", resolved.exists())
-    if resolved.exists():
+def get_prop_firms(request: Request):
+    try:
+        resolved = DATA_PATH.resolve()
+        print(f"[prop-firm-api] data_path={resolved} exists={resolved.exists()}")
+        if not resolved.exists():
+            return JSONResponse({"error": "data file missing", "path": str(resolved)}, status_code=500)
         with open(resolved, "r") as f:
             data = json.load(f)
-        print("loaded_firms", len(data))
-        return data if isinstance(data, list) else []
-    return []
+        if not isinstance(data, list):
+            return JSONResponse({"error": "data not a list"}, status_code=500)
+        print(f"[prop-firm-api] loaded_firms={len(data)}")
+        return data
+    except Exception as e:
+        print(f"[prop-firm-api] error fetching firms: {e}")
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}

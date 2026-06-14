@@ -7,20 +7,20 @@
       "location": "USA"
     },
     "account_details": {
-      "account_name": "25K Full",
+      "account_name": "25K Intraday",
       "account_size": 25000,
-      "price": 167,
-      "sale_price": 33,
-      "profit_split": 0.9,
+      "price": 199,
+      "sale_price": 19.9,
+      "profit_split": 1,
       "profit_target": 1500,
-      "daily_drawdown": null,
-      "max_drawdown": 1500,
+      "daily_drawdown": 1000,
+      "max_drawdown": 1000,
       "drawdown_type": "Trailing",
-      "activation_fee": 25
+      "activation_fee": 69
     },
     "rules_and_parameters": {
-      "min_trading_days": 7,
-      "max_trading_days": null,
+      "min_trading_days": 1,
+      "max_trading_days": 30,
       "allowed_instruments": ["Futures"],
       "scaling_plan": true
     }
@@ -35,20 +35,20 @@
     "account_details": {
       "account_name": "25K",
       "account_size": 25000,
-      "price": 199,
-      "sale_price": 39,
-      "profit_split": 0.8,
+      "price": 145,
+      "sale_price": 145,
+      "profit_split": 1,
       "profit_target": 1500,
       "daily_drawdown": null,
-      "max_drawdown": 1000,
-      "drawdown_type": "Trailing",
-      "activation_fee": 25
+      "max_drawdown": 1500,
+      "drawdown_type": "Static",
+      "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
+      "min_trading_days": null,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -61,20 +61,20 @@
     "account_details": {
       "account_name": "50K",
       "account_size": 50000,
-      "price": 149,
-      "sale_price": 29,
-      "profit_split": 0.8,
+      "price": 85,
+      "sale_price": 85,
+      "profit_split": 0.9,
       "profit_target": 3000,
-      "daily_drawdown": null,
+      "daily_drawdown": 1000,
       "max_drawdown": 2000,
       "drawdown_type": "Static",
       "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
+      "min_trading_days": null,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -87,20 +87,20 @@
     "account_details": {
       "account_name": "25K",
       "account_size": 25000,
-      "price": 149,
-      "sale_price": 29,
+      "price": 150,
+      "sale_price": 150,
       "profit_split": 0.8,
       "profit_target": 1500,
       "daily_drawdown": null,
       "max_drawdown": 2000,
       "drawdown_type": "Trailing",
-      "activation_fee": 0
+      "activation_fee": 130
     },
     "rules_and_parameters": {
       "min_trading_days": 5,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -111,22 +111,22 @@
       "location": "USA"
     },
     "account_details": {
-      "account_name": "25K",
-      "account_size": 25000,
-      "price": 149,
-      "sale_price": 29,
+      "account_name": "50K",
+      "account_size": 50000,
+      "price": 125,
+      "sale_price": 62,
       "profit_split": 0.8,
-      "profit_target": 1000,
+      "profit_target": 3000,
       "daily_drawdown": null,
-      "max_drawdown": 1000,
-      "drawdown_type": "Static",
+      "max_drawdown": 2000,
+      "drawdown_type": "Trailing",
       "activation_fee": 0
     },
     "rules_and_parameters": {
       "min_trading_days": 5,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -137,22 +137,22 @@
       "location": "USA"
     },
     "account_details": {
-      "account_name": "25K",
-      "account_size": 25000,
-      "price": 139,
-      "sale_price": 27,
-      "profit_split": 0.8,
-      "profit_target": 1500,
+      "account_name": "50K",
+      "account_size": 50000,
+      "price": 126,
+      "sale_price": 126,
+      "profit_split": 0.9,
+      "profit_target": 3000,
       "daily_drawdown": null,
-      "max_drawdown": 1000,
-      "drawdown_type": "Static",
+      "max_drawdown": 2000,
+      "drawdown_type": "EOD",
       "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
+      "min_trading_days": 2,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -165,8 +165,8 @@
     "account_details": {
       "account_name": "25K",
       "account_size": 25000,
-      "price": 149,
-      "sale_price": 29,
+      "price": 60,
+      "sale_price": 60,
       "profit_split": 0.8,
       "profit_target": 1250,
       "daily_drawdown": null,
@@ -175,8 +175,8 @@
       "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
-      "max_trading_days": 30,
+      "min_trading_days": 10,
+      "max_trading_days": null,
       "allowed_instruments": ["Futures", "Forex"],
       "scaling_plan": true
     }
@@ -186,25 +186,25 @@
       "firm_name": "TickTickTrader",
       "firm_logo_url": "https://example.com/ticktick.png",
       "firm_url": "https://tickticktrader.com/",
-      "location": "USA"
+      "location": "UAE"
     },
     "account_details": {
       "account_name": "25K",
       "account_size": 25000,
-      "price": 149,
-      "sale_price": 29,
+      "price": null,
+      "sale_price": null,
       "profit_split": 0.8,
       "profit_target": 1500,
-      "daily_drawdown": null,
+      "daily_drawdown": 500,
       "max_drawdown": 1500,
       "drawdown_type": "Static",
       "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
+      "min_trading_days": null,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   },
   {
@@ -215,22 +215,22 @@
       "location": "USA"
     },
     "account_details": {
-      "account_name": "25K",
+      "account_name": "Tier 1",
       "account_size": 25000,
-      "price": 149,
-      "sale_price": 29,
+      "price": 90,
+      "sale_price": 90,
       "profit_split": 0.9,
-      "profit_target": 1500,
+      "profit_target": 1250,
       "daily_drawdown": null,
-      "max_drawdown": 1500,
-      "drawdown_type": "Static",
+      "max_drawdown": 1000,
+      "drawdown_type": "EOD",
       "activation_fee": 0
     },
     "rules_and_parameters": {
-      "min_trading_days": 5,
+      "min_trading_days": 1,
       "max_trading_days": null,
       "allowed_instruments": ["Futures"],
-      "scaling_plan": true
+      "scaling_plan": false
     }
   }
 ]

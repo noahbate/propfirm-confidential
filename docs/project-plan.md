@@ -12,6 +12,7 @@
 ## Phase 2 — Data Expansion
 In progress.
 - Firms populated: Apex Trader Funding, Bulenox, Topstep, Take Profit Trader, TradeDay, My Funded Futures, Earn2Trade, TickTickTrader, Lucid.
+- **Next scrape must collect all account tiers per firm** from official sources, preserving activation fees and pricing for each tier.
 - Validation pending: confirm dynamic prices and rule changes continue to match the schema.
 
 ## Phase 3 — Users and Comparison Tools

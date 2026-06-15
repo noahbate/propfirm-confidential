@@ -11,18 +11,24 @@ This document captures the functional and non-functional requirements for the Pr
 - Display key account attributes to support comparison.
 - Allow users to filter and sort accounts.
 
-### 2.2. Data Points
-- Firm metadata: name, location, website, and logo URL.
-- Account details: account size, price/sale price, profit split, profit target, drawdown values/types, and allowed instruments.
-- Rules: minimum trading days, maximum trading days, and scaling plan availability.
+### 2.2. Data Model
+- **Firm**: `firm_information` block with `firm_name`, `firm_logo_url`, `firm_url`, `location`.
+- **Account**: one record per account tier, not one per firm. Each account is an `account_details` block with `account_name`, `account_size`, `price`, `sale_price`, `profit_split`, `profit_target`, `daily_drawdown`, `max_drawdown`, `drawdown_type`, and `activation_fee`.
+- **Rules**: `rules_and_parameters` with `min_trading_days`, `max_trading_days`, `allowed_instruments`, and `scaling_plan`.
+- Multiple accounts may exist per firm; the dataset should store all observed account tiers for each firm.
 
-### 2.3. User Interface
+### 2.3. Data Requirements
+- Account pricing and activation fees must include all listed tiers from official firm pages.
+- Activation fees must be validated from official sources, not inferred from cached or third-party data.
+- Recurring-vs-one-time fee structure should be captured (`price` semantics documented per firm: monthly subscription or one-time evaluation fee).
+
+### 2.4. User Interface
 - A responsive table/card listing of accounts.
 - Filter controls for account size, price, drawdown type, and firm.
 - Sorting by price, account size, profit target, and drawdown.
 - Search by firm or account name.
 
-### 2.4. Future Enhancements
+### 2.5. Future Enhancements
 - User accounts and saved preferences.
 - Side-by-side compare view.
 - Proprietary scoring models built on top of the underlying data.

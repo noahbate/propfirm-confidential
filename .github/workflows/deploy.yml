@@ -1,0 +1,32 @@
+name: Deploy to Vercel (prop-firm-app)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'prop-firm-app/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: prop-firm-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: prop-firm-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Vercel (production)
+        run: npx vercel@latest --prod --yes --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

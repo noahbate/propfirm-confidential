@@ -23,3 +23,11 @@ Thumbs.db
 *.sqlite3
 # Local Netlify folder
 .netlify
+
+# Runtime artifacts / caches (regenerable, not source)
+backend/scrape-cache/
+backend/PropFirmSentimentCache.json
+backend/test.json
+backend/sentiment/raw/
+backend/.claude/
+.cost.env

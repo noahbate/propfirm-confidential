@@ -1,37 +1,33 @@
-# ⚠ Open Issue: propfirmconfidential.com is OFFLINE (DNS NXDOMAIN)
+# ⚠ Open Issue: propfirmconfidential.com OFFLINE + deploys blocked
 
-**Logged:** 2026-08-10 (by Hermes fleet alignment loop — first run catch)
-**Severity:** Production outage — the site is unreachable for all visitors
-**Status:** OPEN — requires Netlify/domain-owner action (credentials for this target not held in the floatersfocus session)
+**Logged:** 2026-08-10 (fleet alignment loop catch) · **Updated:** 2026-08-16 (corrected root cause)
+**Severity:** Production outage — site unreachable on custom domain; also no new deploys since 2026-06-15.
+**Status:** OPEN — needs account-owner action (billing + domain registration). See "To fix" below.
 
-## Evidence
+## Root cause 1 — Deploys blocked: Netlify account credits exhausted
 
-- `https://propfirmconfidential.com/` → `000` (could not resolve host)
-- `https://www.propfirmconfidential.com/` → `000`
-- `dig @8.8.8.8 propfirmconfidential.com` → **empty answer**
-- `nslookup` → `NXDOMAIN` ("server can't find propfirmconfidential.com")
-- WHOIS: domain status **ACTIVE** — i.e. registered, but **zero DNS records published**
-- No CNAME / A records found anywhere
+- `POST /api/v1/sites/.../deploys` → **403** `{"error":"Account credit usage exceeded - new deploys are blocked until credits are added"}`
+- Site plan: `nf_team_dev` (free dev plan). Last successful deploy: 2026-06-15 (CLI).
+- Build hooks fire (HTTP 200) but no build is created — same credit wall.
+- NOT a token problem: the CLI token has working site-write scope (`updateSite`, `createSiteBuildHook` both succeed).
+- **Fix:** add build credits / upgrade in Netlify → Billing (app.netlify.com → Billing). Once credits exist, deploy via:
+  - `netlify deploy --prod --build` from repo root (netlify.toml: base=prop-firm-app), or
+  - Build hook `https://api.netlify.com/build_hooks/6a821a74a694d2d30845f1df` (created 2026-08-16, "agent-deploy-hook").
 
-## Interpretation
+## Root cause 2 — Custom domain NXDOMAIN: propfirmconfidential.com is NOT registered
 
-The domain is paid up (not expired) but has **no DNS records at all**. Something removed the DNS zone or records — common causes:
-- DNS records deleted from the registrar/Netlify DNS panel (e.g. during a migration or a panel cleanup)
-- Nameservers pointed at a provider where the zone no longer exists
-- The Netlify site's custom domain got detached and the auto-managed DNS was cleared
-
-## To fix (owner of this project)
-
-1. Log in to the domain registrar where `propfirmconfidential.com` is managed.
-2. Confirm the nameservers: for Netlify DNS they should be the four `dns1.p01.nsone.net`–`dns4.p01.nsone.net` nameservers.
-3. In Netlify → the propfirm site → **Domain management**, re-attach the custom domain if it's detached (Netlify will republish the needed DNS records).
-4. Verify: `dig +short propfirmconfidential.com @8.8.8.8` returns the Netlify load balancer IP, then `curl -I https://propfirmconfidential.com` returns 200.
+- Corrected from earlier "domain ACTIVE, zero DNS records" misread (that WHOIS line was the IANA boilerplate, not the domain).
+- `whois propfirmconfidential.com` → **"No match for domain"**
+- Verisign RDAP → **404** (domain not in .com registry)
+- Netlify site: `custom_domain: None`, `domain_aliases: []`, no Netlify DNS zone for the domain (only `flmedi.com` zone exists), though `managed_dns: true`.
+- **Fix:** register the domain (~$10–18/yr) — Netlify Domains (same account, auto-managed DNS; dashboard → Domains → Register) or NameSilo (no local creds found; Cloudflare bot detection blocks automated login). After registration, attach via Netlify Domain management; DNS + SSL auto-provision on Netlify DNS.
 
 ## Monitoring
 
-The fleet alignment loop (cron `8d2189f28030`, daily 08:45) watches `https://propfirmconfidential.com` — it will automatically stop flagging the site once DNS is restored. No manual unsubscribe needed.
+Fleet alignment loop (cron `8d2189f28030`, daily 08:45) watches `https://propfirmconfidential.com` — auto-stops flagging once DNS is restored.
 
-## Related (non-urgent, working-state noise — not action items)
+## Related (resolved 2026-08-16)
 
-- 32 uncommitted changes in this repo (`.hermes/plans/roadmap.md`, `backend/prop_firms.json`, `backend/src/main.py`, `frontend/src/app/page.tsx`, +27 more) — normal dev state, commit when ready.
-- No local `.env` / `backend/.env` file — expected; env vars live in the Netlify dashboard.
+- 32 uncommitted changes committed + pushed to main (`f4c358f..98b8122`, 5 grouped commits: EV calculator, sentiment pipeline, data refresh, Next.js compare page, docs/scripts).
+- Runtime artifacts gitignored (scrape-cache, test.json, .cost.env, sentiment/raw).
+- Working tree clean.

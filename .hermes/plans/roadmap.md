@@ -1,22 +1,40 @@
 # Prop Firm Confidential: Master Implementation Plan
 
-## Phase 1: Setup & Foundations
-- [ ] **Task 1.1: Initialize Git Repository** - Set up a new git repository in the project directory.
-- [ ] **Task 1.2: Domain & Hosting Setup** - Create a placeholder document for `propfirmconfidential.com` domain and Netlify hosting details.
-- [ ] **Task 1.3: Secrets Management** - Outline a secure method for storing API keys (Netlify, X.com, GitHub).
+## ✅ Phase 0: Complete
+- Git repo initialized (`/Users/hermes/projects/propfirm-confidential`, main protected)
+- Astro + FastAPI app deployed (Netlify + Render)
+- xurl authenticated
+- Living SOP created (`.hermes/sops/000-living-sop.md`)
+- Kanban board initialized (`propfirm-confidential`)
 
-## Phase 2: Web MVP
-- [ ] **Task 2.1: Scaffold Web Application** - Create a basic web application structure (e.g., Next.js, Astro).
-- [ ] **Task 2.2: Configure Netlify CI/CD** - Create `netlify.toml` to define the build/deployment process.
-- [ ] **Task 2.3: Initial Deployment to Tempus Domain** - Deploy the scaffolded app to `tempus.dpdns.org`.
-- [ ] **Task 2.4: Migrate to Production Domain** - Update Netlify to point to `propfirmconfidential.com`.
+## Phase 1: X.com Launch (1–2 days)
 
-## Phase 3: X.com Automation
-- [ ] **Task 3.1: Install & Configure xurl CLI** - Ensure `xurl` is installed and authenticated.
-- [ ] **Task 3.2: Develop Posting Scripts** - Create scripts to post market analysis.
-- [ ] **Task 3.3: Schedule Posts with Cron** - Use the `cronjob` tool to schedule the posting scripts.
+- [ ] **Task 1.1:** Review launch post drafts (`docs/marketing-launch-plan.md`) and mark ready
+- [ ] **Task 1.2:** Schedule Day 0 launch thread (`https://propfirmconfidential.netlify.app`)
+- [ ] **Task 1.3:** Schedule Day 1–3 posts (feature highlight, evidence/screenshot, trust/data quality)
+- [ ] **Task 1.4:** Day 7 engagement recap post
 
-## Phase 4: Full Autonomy & Maintenance
-- [ ] **Task 4.1: Implement Self-Healing Hooks** - Configure Hermes Agent hooks to auto-lint code.
-- [ ] **Task 4.2: Create a Status Monitoring Cron Job** - Schedule a daily job to check website and X.com health.
-- [ ] **Task 4.3: Create Living SOP Documentation** - Generate SOP markdown files from successful workflows.
+## Phase 2: Sentiment Page (3–5 days)
+
+- [ ] **Task 2.1:** X.com mention ingestion — scrape/search mentions of each firm via xurl
+- [ ] **Task 2.2:** Sentiment storage schema — add `sentiment_snapshots` + `bot_posts` tables or JSON files
+- [ ] **Task 2.3:** Sentiment page (`/sentiment`) — per-firm payout reports, scam flags, mention volume
+- [ ] **Task 2.4:** Reputation scoring — weighted blend of official rules + sentiment signals
+
+## Phase 3: Product Expansion (3–5 days)
+
+- [ ] **Task 3.1:** Side-by-side comparison view
+- [ ] **Task 3.2:** Authentication + saved preferences
+- [ ] **Task 3.3:** Proprietary scoring with documented methodology
+
+## Phase 3: Data Pipeline (ongoing)
+
+- [ ] **Task 3.1:** Weekly scrape + cache-first refresh (`backend/scrape_result.json` → review → `backend/prop_firms.json`)
+- [ ] **Task 3.2:** GitHub Actions → Netlify deploy on main push
+- [ ] **Task 3.3:** Daily/weekly agentic checks (site health, dependency scan)
+
+## Phase 4: Full Autonomy (next sprint)
+
+- [ ] **Task 4.1:** Self-healing deploy hooks + rollback
+- [ ] **Task 4.2:** Cost dashboard (LLM + hosting)
+- [ ] **Task 4.3:** Multi-channel expansion (Telegram, email)

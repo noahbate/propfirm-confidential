@@ -1,31 +1,26 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-
-type Firm = {
-  firm_information: { firm_name: string; firm_logo_url: string; firm_url: string; location: string };
-  account_details: { account_name: string; account_size: number; price: number | null; sale_price: number | null; profit_split: number | null; profit_target: number; daily_drawdown: number | null; max_drawdown: number; drawdown_type: string };
-  rules_and_parameters: { min_trading_days: number | null; max_trading_days: number | null; allowed_instruments: string[]; scaling_plan: boolean };
-};
-
-type SortKey = 'account_size' | 'price' | 'sale_price' | 'profit_target' | 'max_drawdown';
-type SortDir = 'asc' | 'desc';
+import { computeScore, type Firm, type SortKey, getSortValue } from './firm-lib';
 
 export default function Home() {
   const [firms, setFirms] = useState<Firm[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [sortKey, setSortKey] = useState<SortKey>('account_size');
-  const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const [sortKey, setSortKey] = useState<SortKey>('score');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
     const source = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/api/prop-firms` : '/api/prop-firms';
     fetch(source)
       .then((res) => {
         if (!res.ok) throw new Error('API error');
-        return res.json();
+        return res.json() as Promise<Firm[]>;
       })
-      .then(setFirms)
+      .then((data) => {
+        const scored = data.map((item) => ({ ...item, score: computeScore(item) }));
+        setFirms(scored);
+      })
       .catch(() => setFirms([]))
       .finally(() => setLoading(false));
   }, []);
@@ -39,8 +34,8 @@ export default function Home() {
     });
 
     return list.sort((a, b) => {
-      const av = a.account_details[sortKey];
-      const bv = b.account_details[sortKey];
+      const av = getSortValue(a, sortKey);
+      const bv = getSortValue(b, sortKey);
       const aNum = typeof av === 'number' ? av : 0;
       const bNum = typeof bv === 'number' ? bv : 0;
       return sortDir === 'asc' ? aNum - bNum : bNum - aNum;
@@ -70,6 +65,8 @@ export default function Home() {
         />
         <div className="text-sm text-gray-600">
           Sort by:{' '}
+          <button className="underline" onClick={() => cycleSort('score')}>Score</button>
+          {' • '}
           <button className="underline" onClick={() => cycleSort('account_size')}>Account size</button>
           {' • '}
           <button className="underline" onClick={() => cycleSort('price')}>Price</button>
@@ -96,34 +93,39 @@ export default function Home() {
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profit target</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max drawdown</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drawdown</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-4 text-center text-sm text-gray-500">No matching accounts.</td>
+                <td colSpan={9} className="px-4 py-4 text-center text-sm text-gray-500">No matching accounts.</td>
               </tr>
             )}
-            {filtered.map((item, idx) => (
-              <tr key={idx} className="hover:bg-gray-50">
-                <td className="px-4 py-3 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
-                    <img src={item.firm_information.firm_logo_url} alt="" className="h-8 w-8 rounded-full object-cover" />
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{item.firm_information.firm_name}</div>
-                      <div className="text-xs text-gray-500">{item.rules_and_parameters.allowed_instruments.join(', ')}</div>
+            {filtered.map((item, idx) => {
+              const itemScore = item.score ?? computeScore(item);
+              return (
+                <tr key={idx} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <div className="flex items-center gap-3">
+                      <img src={item.firm_information.firm_logo_url} alt="" className="h-8 w-8 rounded-full object-cover" />
+                      <div>
+                        <div className="text-sm font-medium text-gray-900">{item.firm_information.firm_name}</div>
+                        <div className="text-xs text-gray-500">{item.rules_and_parameters.allowed_instruments.join(', ')}</div>
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.account_name}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.price ?? '—'}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.sale_price ?? '—'}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.profit_split ? `${Math.round(item.account_details.profit_split * 100)}%` : '—'}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.profit_target}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.max_drawdown}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.drawdown_type}</td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.account_name}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.price ?? '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.sale_price ?? '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.profit_split ? `${Math.round(item.account_details.profit_split * 100)}%` : '—'}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.profit_target}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.max_drawdown}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{item.account_details.drawdown_type}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{itemScore}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

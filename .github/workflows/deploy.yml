@@ -23,8 +23,10 @@ jobs:
         working-directory: prop-firm-app
         run: npm ci
 
-      # Deploy from repo root: project rootDirectory (prop-firm-app) is applied by the CLI.
+      # Deploy from inside the app dir; project rootDirectory is unset so the CLI
+      # deploys exactly this directory.
       - name: Deploy to Vercel (production)
+        working-directory: prop-firm-app
         run: npx vercel@latest --prod --yes --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

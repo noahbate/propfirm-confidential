@@ -1,0 +1,800 @@
+---
+// EV Calculator — prop firm expected value ranking
+// Based on PropFirmEV methodology: Monte Carlo simulation of trade stats vs firm rulebooks
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>EV Calculator — Prop Firm Confidential</title>
+    <style is:global>
+      :root {
+        --bg: #0a0e14;
+        --surface: #111821;
+        --surface2: #1a2330;
+        --border: #243240;
+        --text: #eaeef2;
+        --muted: #8b98a6;
+        --accent: #c0d6e6;
+        --pos: #7ed996;
+        --neg: #f0857a;
+        --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .container { max-width: 920px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+      /* Nav */
+      .topnav { display: flex; justify-content: space-between; align-items: center; padding: 0 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .topnav .brand { font-size: 1.25rem; font-weight: 600; }
+      .topnav .brand span { color: var(--muted); font-weight: 400; font-size: 0.8125rem; }
+      .topnav nav { display: flex; gap: 1.25rem; }
+      .topnav nav a { color: var(--muted); font-size: 0.875rem; }
+      .topnav nav a:hover { color: var(--text); }
+
+      /* Form */
+      .hero { margin-bottom: 2rem; text-align: center; }
+      .hero h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+      .hero p { color: var(--muted); font-size: 0.9375rem; }
+
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+      .card h2 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.25rem; }
+      .card .sub { color: var(--muted); font-size: 0.8125rem; margin-bottom: 1rem; }
+
+      .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+      @media (min-width: 640px) { .input-grid { grid-template-columns: repeat(4, 1fr); } }
+      .field label { display: block; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.25rem; }
+      .field input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.625rem 0.75rem; color: var(--text); font-family: var(--mono); font-size: 1rem; outline: none; }
+      .field input:focus { border-color: var(--accent); }
+      .field .hint { display: block; font-size: 0.6875rem; color: var(--muted); margin-top: 0.25rem; }
+
+      .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--text); transition: opacity 0.15s; }
+      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+      .btn-text { background: none; border: none; color: var(--accent); font-size: 0.8125rem; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+      .form-actions { display: flex; flex-direction: column; gap: 0.75rem; align-items: stretch; }
+      @media (min-width: 640px) { .form-actions { flex-direction: row; justify-content: space-between; align-items: center; } }
+      .error { color: var(--neg); font-size: 0.8125rem; }
+
+      /* Estimate mode */
+      .estimate-controls { display: flex; flex-direction: column; gap: 1.25rem; }
+      .slider-row label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+      .slider-row .val { font-family: var(--mono); font-size: 1rem; font-weight: 600; float: right; }
+      .slider-row input[type=range] { width: 100%; margin: 0.5rem 0; accent-color: var(--accent); }
+      .slider-row .scale { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); }
+      .slider-row select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem; color: var(--text); font-size: 0.875rem; }
+      .preview-box { background: var(--surface2); border-radius: 0.5rem; padding: 0.75rem; font-size: 0.8125rem; color: var(--muted); margin-top: 0.25rem; }
+      .preview-box .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.25rem; }
+      .preview-box .grid span { font-family: var(--mono); color: var(--text); }
+
+      /* Results */
+      #results { display: none; }
+      .result-header { text-align: center; margin-bottom: 1.5rem; }
+      .result-header .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+      .result-header h1 { font-size: 1.75rem; margin: 0.25rem 0; }
+      .result-header .meta { color: var(--muted); font-size: 0.8125rem; }
+
+      .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 0.5rem; }
+      @media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+      .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.875rem; }
+      .stat-card .lbl { font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+      .stat-card .num { font-family: var(--mono); font-size: 1.25rem; font-weight: 600; margin-top: 0.25rem; }
+
+      .top-match { background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+      .top-match .badge { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pos); }
+      .top-match .firm-name { font-size: 1.5rem; font-weight: 700; margin: 0.25rem 0; }
+      .top-match .firm-summary { color: var(--muted); font-size: 0.875rem; margin-bottom: 1rem; }
+      .top-match .ev-box { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem; }
+      .top-match .ev-box .lbl { font-size: 0.6875rem; text-transform: uppercase; color: var(--muted); }
+      .top-match .ev-box .val { font-family: var(--mono); font-size: 1.75rem; font-weight: 700; color: var(--pos); }
+      .top-match .why { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
+      .top-match .try-link { display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: var(--accent); color: var(--bg); border-radius: 0.5rem; font-weight: 600; font-size: 0.875rem; }
+
+      /* Ranking table */
+      .ranking-section { margin-bottom: 1.5rem; }
+      .ranking-section h2 { font-size: 1.0625rem; font-weight: 600; margin-bottom: 0.75rem; }
+      .sort-bar { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; align-items: center; flex-wrap: wrap; }
+      .sort-bar .label { font-size: 0.8125rem; color: var(--muted); }
+      .sort-bar button { padding: 0.25rem 0.625rem; border-radius: 0.375rem; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-size: 0.75rem; cursor: pointer; }
+      .sort-bar button.active { border-color: var(--accent); color: var(--text); }
+
+      .ranking-table { overflow-x: auto; border: 1px solid var(--border); border-radius: 0.75rem; }
+      .ranking-table table { width: 100%; border-collapse: collapse; min-width: 680px; }
+      .ranking-table th { padding: 0.625rem 0.75rem; text-align: right; font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+      .ranking-table th:first-child, .ranking-table td:first-child { text-align: center; width: 2rem; }
+      .ranking-table th:nth-child(2), .ranking-table td:nth-child(2) { text-align: left; }
+      .ranking-table td { padding: 0.625rem 0.75rem; font-size: 0.875rem; border-bottom: 1px solid var(--border); text-align: right; font-family: var(--mono); white-space: nowrap; }
+      .ranking-table td:nth-child(2) { font-family: var(--font); }
+      .ranking-table tr:last-child td { border-bottom: none; }
+      .ranking-table tr.row-top td { background: rgba(126, 217, 150, 0.04); }
+      .ranking-table .rank { color: var(--muted); font-size: 0.75rem; }
+      .ranking-table .firm-cell { font-weight: 500; }
+      .ranking-table .promo { display: inline-block; font-size: 0.625rem; padding: 0.0625rem 0.375rem; border-radius: 0.25rem; background: var(--surface2); color: var(--muted); margin-left: 0.375rem; border: 1px solid var(--border); }
+      .ranking-table .pass-bar { display: inline-block; width: 2.5rem; height: 0.25rem; border-radius: 999px; background: var(--surface2); margin-right: 0.25rem; vertical-align: middle; }
+      .ranking-table .pass-fill { display: block; height: 100%; border-radius: 999px; background: var(--pos); }
+      .ranking-table .ev-val { font-weight: 600; color: var(--pos); }
+      .paths-toggle { background: var(--surface2); border: 1px solid var(--border); border-radius: 0.375rem; padding: 0.125rem 0.5rem; font-size: 0.6875rem; color: var(--muted); cursor: pointer; }
+      .paths-toggle:hover { color: var(--text); }
+
+      .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.875rem; }
+      .how { color: var(--muted); font-size: 0.8125rem; margin-top: 2rem; }
+      .how h3 { font-size: 1rem; color: var(--text); margin-bottom: 0.5rem; }
+      .how ol { padding-left: 1.25rem; line-height: 1.7; }
+      .how code { font-family: var(--mono); font-size: 0.8125rem; background: var(--surface2); padding: 0.125rem 0.375rem; border-radius: 0.25rem; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="topnav">
+        <div class="brand">Prop Firm Confidential <span>· EV Calculator</span></div>
+        <nav>
+          <a href="/">Firms</a>
+          <a href="/compare">Compare</a>
+          <a href="/ev-calculator">EV Calculator</a>
+        </nav>
+      </div>
+
+      <!-- INPUT VIEW -->
+      <div id="input-view">
+        <div class="hero">
+          <h1>Which prop firm is easiest for you to pass?</h1>
+          <p>Four numbers from your trading history. We simulate each firm's rules against your style and tell you which one your trading is most likely to fund.</p>
+        </div>
+
+        <div class="card" id="form-card">
+          <h2>Enter your stats</h2>
+          <div class="sub">Free · No data leaves your browser · Simulation runs client-side</div>
+
+          <div id="exact-mode" class="input-grid">
+            <div class="field">
+              <label>Total trades</label>
+              <input id="t-total" type="text" inputmode="numeric" value="50" placeholder="50" />
+              <span class="hint">Last 50+ recommended</span>
+            </div>
+            <div class="field">
+              <label>Wins</label>
+              <input id="t-wins" type="text" inputmode="numeric" value="22" placeholder="22" />
+              <span class="hint">Profitable trades</span>
+            </div>
+            <div class="field">
+              <label>Avg win ($)</label>
+              <input id="t-avgwin" type="text" inputmode="decimal" value="180" placeholder="180" />
+              <span class="hint">Across all winners</span>
+            </div>
+            <div class="field">
+              <label>Avg loss ($)</label>
+              <input id="t-avgloss" type="text" inputmode="decimal" value="120" placeholder="120" />
+              <span class="hint">Across all losers</span>
+            </div>
+          </div>
+
+          <div id="estimate-mode" class="estimate-controls" style="display:none;">
+            <div class="slider-row">
+              <label>Win rate <span class="val" id="wr-val">45%</span></label>
+              <input id="s-wr" type="range" min="30" max="70" step="1" value="45" />
+              <div class="scale"><span>30%</span><span>50%</span><span>70%</span></div>
+            </div>
+            <div class="slider-row">
+              <label>Reward-to-risk <span class="val" id="rr-val">1.50 : 1</span></label>
+              <input id="s-rr" type="range" min="0.5" max="3" step="0.05" value="1.5" />
+              <div class="scale"><span>0.5 : 1</span><span>1 : 1</span><span>3 : 1</span></div>
+            </div>
+            <div class="slider-row">
+              <label>Trades per sample</label>
+              <select id="s-trades">
+                <option value="25">25 trades</option>
+                <option value="50" selected>50 trades</option>
+                <option value="100">100 trades</option>
+                <option value="200">200 trades</option>
+                <option value="500">500 trades</option>
+              </select>
+            </div>
+            <div class="preview-box" id="est-preview"></div>
+          </div>
+
+          <div class="form-actions" style="margin-top:1.25rem;">
+            <div>
+              <button class="btn-text" id="toggle-estimate">Don't know your exact stats? Estimate →</button>
+            </div>
+            <div style="display:flex; gap:0.75rem; align-items:center;">
+              <span class="error" id="err-msg"></span>
+              <button class="btn btn-primary" id="calc-btn">Calculate My EV →</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom:2rem;">
+          <button class="btn-text" id="sample-btn">Try with sample data →</button>
+        </div>
+
+        <div class="how">
+          <h3>How it works</h3>
+          <ol>
+            <li><strong>Type four numbers</strong> — total trades, wins, avg win, avg loss. Pull from any platform's performance tab.</li>
+            <li><strong>We simulate each firm</strong> — 1,000 Monte Carlo runs per firm, re-running your trade distribution through their real drawdown, profit target, and daily loss rules.</li>
+            <li><strong>You see the shortlist</strong> — one ranked list by expected value (EV). The top firm is where your style makes the most money on average.</li>
+          </ol>
+          <p style="margin-top:0.75rem;"><code>EV = pass_prob × payout − pass_prob × activation_fee − eval_cost</code></p>
+        </div>
+      </div>
+
+      <!-- RESULTS VIEW -->
+      <div id="results">
+        <div class="result-header">
+          <div class="label">YOUR REPORT</div>
+          <h1 id="best-fit">—</h1>
+          <div class="meta" id="report-meta">—</div>
+        </div>
+
+        <div class="card">
+          <h2>Your stats</h2>
+          <div class="stats-grid" id="stats-grid"></div>
+        </div>
+
+        <div class="top-match" id="top-match"></div>
+
+        <div class="ranking-section">
+          <h2 id="ranking-title">Full ranking</h2>
+          <div class="sort-bar">
+            <span class="label">Sort:</span>
+            <button data-sort="ev" class="active">EV (highest)</button>
+            <button data-sort="size-asc">Account size ↑</button>
+            <button data-sort="size-desc">Account size ↓</button>
+          </div>
+          <div class="ranking-table" id="ranking-table"></div>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem;">
+          <button class="btn" id="back-btn">← Run again with different stats</button>
+        </div>
+
+        <div class="how">
+          <h3>Methodology</h3>
+          <ol>
+            <li><strong>Pass probability</strong> — 1,000 simulated evaluations per firm. Each attempt: up to 400 trades, one per day. Win with probability = your win rate. EOD trailing drawdown floor updated after each trade. Fail if balance drops below floor or daily loss limit breached. Pass if profit target hit first.</li>
+            <li><strong>Expected payout</strong> — 2,000-run funded-phase simulation. Trader trades 1/day until +$2,000 or bust on trailing floor. If +$2k: withdraw $1,000, lock drawdown at breakeven, then 5 more winning days for another $1,000. Total: $2,000. If bust: $0.</li>
+            <li><strong>EV per attempt</strong> — <code>pass_prob × payout − pass_prob × activation_fee − eval_cost</code>. Eval cost paid every attempt. Activation fee only on pass.</li>
+          </ol>
+          <p style="margin-top:0.75rem; color:var(--muted); font-size:0.75rem;">Firm data verified May 25, 2026. Rules change frequently — always verify on the firm's official site. Some outbound links may be affiliate links. Rankings are based on your expected value, not commissions.</p>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+    // ============================================================
+    // FIRM DATABASE — 19 prop firm × account configs
+    // ============================================================
+    const FIRMS = [
+      {"slug":"mff-flex-50k","name":"MFF Flex 50K","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":91.8,"activation_fee":0,"promo_code":"JJ","profit_split":0.8,"payout_cap":100000,"winning_day_threshold":150,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":5,"consistency_max_day_pct":0.5,"notes":"Flex 50k: EOD trailing DD, no DLL, 50% eval consistency (2-day min). Payouts: 5 winning days of $150+, 50% of profits up to $5k cap. After first payout, MLL locks at +$100. 80/20 split. Promo: $91.80 with code JJ (rack $153).","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":0,"eval_cost":91.8,"payout_cap_per_request":5000}},
+      {"slug":"topstep-no-fee-consistency","name":"TopStep No-Fee · Consistency","affiliate_url":"https://www.topstep.com/","eval_cost":95,"activation_fee":0,"promo_code":"","profit_split":0.9,"payout_cap":6000,"winning_day_threshold":0,"winning_day_count":3,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":7,"consistency_max_day_pct":0.5,"notes":"No-Activation-Fee Combine ($95/mo) paired with XFA Consistency variant (3 days, 40% consistency, $3k/$4k/$6k per payout). 100k/150k pricing best-estimate — verify on checkout.","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":1000,"eval_cost":95,"payout_cap_per_request":3000}},
+      {"slug":"mff-flex-25k","name":"MFF Flex 25K","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":57,"activation_fee":0,"promo_code":"JJ","profit_split":0.8,"payout_cap":100000,"winning_day_threshold":100,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":5,"consistency_max_day_pct":0.5,"notes":"Flex 25k: EOD trailing DD, no DLL, 50% eval consistency (2-day min). Payouts: 5 winning days of $100+, 50% of profits up to $3k cap. After first payout, MLL locks at +$100. 80/20 split. Promo: $57 with code JJ (rack $95).","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":57,"payout_cap_per_request":3000}},
+      {"slug":"topstep-consistency","name":"TopStep Consistency","affiliate_url":"https://www.topstep.com/","eval_cost":49,"activation_fee":149,"promo_code":"","profit_split":0.9,"payout_cap":6000,"winning_day_threshold":0,"winning_day_count":3,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":7,"consistency_max_day_pct":0.5,"notes":"Standard Trading Combine ($49/mo, $149 activation). XFA Consistency: 3 trading days, 40% consistency, 50% of balance up to $3k/$4k/$6k.","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":1000,"eval_cost":49,"payout_cap_per_request":3000}},
+      {"slug":"mff-builder-add-on","name":"MFF Builder Add-On","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":87,"activation_fee":0,"promo_code":"JJ","profit_split":0.8,"payout_cap":10000,"winning_day_threshold":0,"winning_day_count":2,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":2,"consistency_max_day_pct":0,"notes":"Builder Add-On: tighter $1.5k EOD trailing DD vs $2k Default. Same eval rules. Funded: flat $2k payout cap, max 5 sim payouts. 80/20 split. Promo: $87 with code JJ (rack $125).","account":{"size":50000,"profit_target":3000,"max_dd":1500,"daily_loss":0,"eval_cost":87,"payout_cap_per_request":2000}},
+      {"slug":"topstep-no-fee","name":"TopStep No-Fee","affiliate_url":"https://www.topstep.com/","eval_cost":95,"activation_fee":0,"promo_code":"","profit_split":0.9,"payout_cap":5000,"winning_day_threshold":150,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":14,"consistency_max_day_pct":0.5,"notes":"No-Activation-Fee Combine ($95/mo, $0 activation). XFA Standard payout: 5 winning days, per-size caps. 100k/150k best-estimate — verify on checkout.","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":1000,"eval_cost":95,"payout_cap_per_request":2000}},
+      {"slug":"mff-builder","name":"MFF Builder","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":107,"activation_fee":0,"promo_code":"JJ","profit_split":0.8,"payout_cap":10000,"winning_day_threshold":0,"winning_day_count":2,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":2,"consistency_max_day_pct":0,"notes":"Builder Default: $2k EOD trailing DD, no eval consistency (passes in 1 day). $1k soft-pause DLL. Funded: $2k payout cap, max 5 sim payouts, then live. 80/20 split. Promo: $107 with code JJ (rack $153).","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":0,"eval_cost":107,"payout_cap_per_request":2000}},
+      {"slug":"topstep","name":"TopStep Standard","affiliate_url":"https://www.topstep.com/","eval_cost":49,"activation_fee":149,"promo_code":"","profit_split":0.9,"payout_cap":5000,"winning_day_threshold":150,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":14,"consistency_max_day_pct":0.5,"notes":"Standard Trading Combine ($49/mo, $149 activation). XFA Standard: 5 winning days of $150+, then 50% of balance up to $2k/$3k/$5k. 90/10 split. 50% best-day consistency rule.","account":{"size":50000,"profit_target":3000,"max_db":2000,"max_dd":2000,"daily_loss":1000,"eval_cost":49,"payout_cap_per_request":2000}},
+      {"slug":"tradeify-flex","name":"Tradeify Select (Flex)","affiliate_url":"https://tradeify.co/?ref=JJ","eval_cost":99,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":25000,"winning_day_threshold":0,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":95,"payout_frequency_days":5,"consistency_max_day_pct":0.4,"notes":"Select eval (3-day min, 40% consistency, no DLL). Funded Flex path: NO DLL, NO funded consistency. 5 winning days of $100/$150/$200/$250, 50% of profit up to $1.25k/$3k/$4k/$5k. 90/10 split.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":65,"payout_cap_per_request":1250}},
+      {"slug":"tradeify-growth","name":"Tradeify Growth","affiliate_url":"https://tradeify.co/?ref=JJ","eval_cost":87,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":25000,"winning_day_threshold":0,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":95,"payout_frequency_days":5,"consistency_max_day_pct":0,"notes":"Growth eval: 1-day pass, NO consistency rule, soft-pause DLL. Funded: fixed payout policy, 5 winning days minimum, 35% funded consistency. Per-cycle caps grow up to $25k by payout 6.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":59,"payout_cap_per_request":1000}},
+      {"slug":"lucid-flex","name":"LucidFlex","affiliate_url":"https://lucidtrading.com/ref/JJS","eval_cost":98,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":15000,"winning_day_threshold":150,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":95,"payout_frequency_days":0,"consistency_max_day_pct":0.5,"notes":"Eval: 50% consistency (2-day min). NO DLL. Funded: NO consistency, NO DLL. Per-cycle caps: $1k/$2k/$2.5k/$3k. 5 winning days of $100/$150/$200/$250. 90/10 split. 5 payouts then live.","account":{"size":25000,"profit_target":1250,"max_dd":1000,"daily_loss":0,"eval_cost":70,"payout_cap_per_request":1000}},
+      {"slug":"lucid-pro","name":"LucidPro","affiliate_url":"https://lucidtrading.com/ref/JJS","eval_cost":129.5,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":25000,"winning_day_threshold":0,"winning_day_count":0,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":120,"payout_frequency_days":0,"consistency_max_day_pct":0,"notes":"Eval: DLL on 50k+, NO consistency (1-day pass). Funded: 40% consistency on payouts + LucidScale DLL (60% of peak EOD profit). Payout caps grow on subsequent requests. 90/10 split.","account":{"size":25000,"profit_target":1250,"max_dd":1000,"daily_loss":0,"eval_cost":94.5,"payout_cap_per_request":1000}},
+      {"slug":"apex-intraday","name":"Apex Intraday","affiliate_url":"https://apextraderfunding.com/member/aff/go/jsimon90","eval_cost":32,"activation_fee":79,"promo_code":"JJ","profit_split":1,"payout_cap":25000,"winning_day_threshold":200,"winning_day_count":5,"drawdown_mode":"intraday","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":7,"consistency_max_day_pct":0,"notes":"Apex Intraday (4.0): real-time trailing DD including unrealized P&L. NO eval DLL. $79 activation. 100% payout split, max 6 payouts per PA. 50% consistency on PA payouts.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":35,"payout_cap_per_request":1000}},
+      {"slug":"apex","name":"Apex EOD","affiliate_url":"https://apextraderfunding.com/member/aff/go/jsimon90","eval_cost":32,"activation_fee":99,"promo_code":"JJ","profit_split":1,"payout_cap":25000,"winning_day_threshold":250,"winning_day_count":5,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":0,"payout_frequency_days":7,"consistency_max_day_pct":0,"notes":"Apex EOD (4.0): EOD trailing DD at market close + DLL ($500/$1k/$1.5k/$2k by size). 100% split, max 6 payouts per PA. 50% consistency on PA payouts. No resets.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":500,"eval_cost":35,"payout_cap_per_request":1000}},
+      {"slug":"mff-pro","name":"MFF Pro","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":165,"activation_fee":0,"promo_code":"JJ","profit_split":0.8,"payout_cap":100000,"winning_day_threshold":0,"winning_day_count":0,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":99,"payout_frequency_days":14,"consistency_max_day_pct":0.5,"notes":"Pro: NO daily loss limit. 14-day wait between payouts, $1k minimum. MLL static after first payout. 80/20 split. Eval: 50% consistency (2-day min).","account":{"size":50000,"profit_target":3000,"max_dd":2000,"daily_loss":0,"eval_cost":165,"payout_cap_per_request":1000}},
+      {"slug":"tradeify-lightning","name":"Tradeify Lightning","affiliate_url":"https://tradeify.co/?ref=JJ","eval_cost":330,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":25000,"winning_day_threshold":0,"winning_day_count":0,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":492,"payout_frequency_days":1,"consistency_max_day_pct":0.2,"notes":"Lightning: INSTANT funded — no eval, no resets. Purchase price IS the funded fee. Progressive consistency: 20%→25%→30%. Soft-pause DLL on 50k+. EOD trailing DD locks at +$100.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":231,"payout_cap_per_request":1000}},
+      {"slug":"lucid-direct","name":"LucidDirect","affiliate_url":"https://lucidtrading.com/ref/JJS","eval_cost":364,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":17500,"winning_day_threshold":0,"winning_day_count":0,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":364,"payout_frequency_days":0,"consistency_max_day_pct":0.2,"notes":"LucidDirect: INSTANT funded — no eval. 20% consistency on first payout. Larger MLL than Pro/Flex on 100k/150k. LucidScale DLL after buffer. NO RESETS. Per-payout caps grow. Max 5 payouts then live. 90/10 split.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":238,"payout_cap_per_request":1000}},
+      {"slug":"tradeify","name":"Tradeify Select (Daily)","affiliate_url":"https://tradeify.co/?ref=JJ","eval_cost":99,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":25000,"winning_day_threshold":0,"winning_day_count":3,"drawdown_mode":"eod","trailing_dd_locks_at_breakeven":true,"reset_cost":95,"payout_frequency_days":1,"consistency_max_day_pct":0.4,"notes":"Select eval (3-day min, 40% consistency, no DLL). Funded Daily path: tighter MLL on 100k/150k, $500/$1k/$1.25k/$1.75k DLL, daily payouts capped at 2× cycle profit. $250 minimum. 90/10 split.","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":65,"payout_cap_per_request":600}},
+      {"slug":"myfundedfutures","name":"MFF Rapid","affiliate_url":"https://myfundedfutures.com/challenge?ref=5178","eval_cost":80,"activation_fee":0,"promo_code":"JJ","profit_split":0.9,"payout_cap":10000,"winning_day_threshold":0,"winning_day_count":0,"drawdown_mode":"intraday","trailing_dd_locks_at_breakeven":true,"reset_cost":99,"payout_frequency_days":1,"consistency_max_day_pct":0.5,"notes":"Rapid: INTRADAY trailing DD on funded — biggest structural risk. Daily payouts after first trade, no DLL, 90/10 split, $500 minimum. Eval: 50% consistency (2-day min).","account":{"size":25000,"profit_target":1500,"max_dd":1000,"daily_loss":0,"eval_cost":65,"payout_cap_per_request":550}}
+    ];
+
+    const PASSES = 1000;        // Monte Carlo evaluation attempts per firm
+    const FUNDED_PASSES = 2000;  // Monte Carlo funded-phase attempts per firm
+    const MAX_TRADES = 400;      // max trades per evaluation attempt
+    const FUNDED_TARGET = 2000;  // funded-phase profit target for first payout cycle
+    const FUNDED_PAYOUT = 2000;  // total payout if funded cycle succeeds
+
+    // Deterministic PRNG (mulberry32) for reproducible results
+    function mulberry32(seed) {
+      return function() {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function seedFrom(trades, wins, avgWin, avgLoss) {
+      // Deterministic seed from inputs
+      const s = `${trades},${wins},${avgWin},${avgLoss}`;
+      let h = 0;
+      for (let i = 0; i < s.length; i++) {
+        h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+      }
+      return Math.abs(h) || 1;
+    }
+
+    // Single evaluation attempt through a firm's rulebook
+    function simulateEvalAttempt(winRate, avgWin, avgLoss, firm, rng) {
+      const a = firm.account;
+      const balance = 0;
+      let cur = 0;
+      const maxDD = a.max_dd;
+      const dailyLoss = a.daily_loss;  // 0 = no DLL
+      const target = a.profit_target;
+      const isEOD = firm.drawdown_mode === 'eod';
+
+      // EOD trailing floor starts at -maxDD
+      let floor = -maxDD;
+
+      for (let i = 0; i < MAX_TRADES; i++) {
+        // One trade per day
+        const isWin = rng() < winRate;
+        const pnl = isWin ? avgWin : -avgLoss;
+
+        // For intraday mode, check intraday DD during the trade
+        if (!isEOD) {
+          // Intraday: floor tracks peak including unrealized
+          // Simplified: check if balance + pnl would breach intraday floor
+          const intradayLow = cur + Math.min(0, pnl);
+          if (intradayLow < floor && isWin === false) {
+            // intraday trailing follows you down
+            if (intradayLow <= floor) {
+              // actually for intraday, the floor moves WITH you in real time
+              // so if you hit the floor at any point during the trade, you fail
+              return { passed: false, trades: i + 1, finalBalance: intradayLow };
+            }
+          }
+        }
+
+        // Daily loss limit check (if applicable)
+        if (dailyLoss > 0 && pnl < 0) {
+          // Simplified: one trade per day, so daily P&L = this trade's P&L
+          if (Math.abs(pnl) >= dailyLoss) {
+            return { passed: false, trades: i + 1, finalBalance: cur + pnl };
+          }
+        }
+
+        cur += pnl;
+
+        // Update EOD trailing floor
+        if (isEOD) {
+          // Trailing DD: floor = max(balance - maxDD, -maxDD)
+          // But locks at breakeven (0) if firm has that feature
+          if (firm.trailing_dd_locks_at_breakeven && cur >= maxDD) {
+            // Once you've earned the full cushion, floor locks at breakeven
+            floor = Math.max(floor, 0);
+          } else {
+            const newFloor = cur - maxDD;
+            floor = Math.max(floor, newFloor);
+            if (firm.trailing_dd_locks_at_breakeven && floor >= 0) {
+              floor = 0;
+            }
+          }
+        } else {
+          // Intraday: floor moves with balance in real-time
+          if (firm.trailing_dd_locks_at_breakeven && cur >= maxDD) {
+            floor = Math.max(floor, 0);
+          } else {
+            const newFloor = cur - maxDD;
+            floor = Math.max(floor, newFloor);
+            if (firm.trailing_dd_locks_at_breakeven && floor >= 0) {
+              floor = 0;
+            }
+          }
+        }
+
+        // Check drawdown breach
+        if (cur < floor) {
+          return { passed: false, trades: i + 1, finalBalance: cur };
+        }
+
+        // Check profit target
+        if (cur >= target) {
+          return { passed: true, trades: i + 1, finalBalance: cur };
+        }
+      }
+
+      // Ran out of trades without hitting target or DD
+      return { passed: false, trades: MAX_TRADES, finalBalance: cur };
+    }
+
+    // Single funded-phase attempt
+    function simulateFundedAttempt(winRate, avgWin, avgLoss, rng) {
+      // $2k EOD trailing drawdown on funded account
+      // Trade 1/day until +$2,000 or bust
+      const fundedDD = 2000;
+      let cur = 0;
+      let floor = -fundedDD;
+
+      for (let i = 0; i < MAX_TRADES; i++) {
+        const isWin = rng() < winRate;
+        const pnl = isWin ? avgWin : -avgLoss;
+        cur += pnl;
+
+        // Update floor (locks at breakeven after reaching +$2k cushion)
+        if (cur >= fundedDD) {
+          floor = Math.max(floor, 0);
+        } else {
+          const newFloor = cur - fundedDD;
+          floor = Math.max(floor, newFloor);
+          if (floor >= 0) floor = 0;
+        }
+
+        // Check bust
+        if (cur < floor) {
+          return { payout: 0 };
+        }
+
+        // Check reached +$2,000
+        if (cur >= fundedDD) {
+          // Withdraw $1,000, lock DD at breakeven
+          // Then need 5 more winning days for another $1,000
+          // Model: after reaching +$2k, probability of getting 5 more winning days
+          let winningDays = 0;
+          let postBalance = fundedDD - 1000; // withdrew $1k, balance resets
+          let postFloor = 0; // locked at breakeven
+
+          for (let j = 0; j < MAX_TRADES; j++) {
+            const isWin2 = rng() < winRate;
+            const pnl2 = isWin2 ? avgWin : -avgLoss;
+
+            // Only count winning days (need 5)
+            if (isWin2) winningDays++;
+
+            postBalance += pnl2;
+
+            // Trailing DD locked at breakeven, so floor stays at 0
+            // But new floor follows balance minus DD, locked at 0 min
+            const newFloor2 = postBalance - fundedDD;
+            postFloor = Math.max(postFloor, 0); // stays locked
+            if (postFloor < newFloor2) postFloor = newFloor2;
+            if (postFloor < 0) postFloor = 0;
+
+            if (postBalance < postFloor) {
+              return { payout: 1000 }; // got first payout, busted on second cycle
+            }
+
+            if (winningDays >= 5) {
+              return { payout: 2000 }; // got both payouts
+            }
+          }
+          return { payout: 1000 }; // got first payout, didn't complete 5 winning days
+        }
+      }
+      return { payout: 0 }; // never reached +$2k
+    }
+
+    // Full simulation: run all firms and return ranking
+    function runSimulation(totalTrades, wins, avgWin, avgLoss) {
+      const winRate = wins / Math.max(totalTrades, 1);
+      const baseSeed = seedFrom(totalTrades, wins, avgWin, avgLoss);
+      console.time('EV simulation');
+      const results = FIRMS.map((firm, idx) => {
+        // Each firm gets a deterministic seed derived from inputs + firm slug
+        let firmSeed = baseSeed;
+        for (let i = 0; i < firm.slug.length; i++) {
+          firmSeed = ((firmSeed << 5) - firmSeed + firm.slug.charCodeAt(i)) | 0;
+        }
+        firmSeed = Math.abs(firmSeed) || 1;
+        const rng = mulberry32(firmSeed);
+
+        // Eval phase: 1000 attempts
+        let passCount = 0;
+        let samplePath = null;
+        for (let p = 0; p < PASSES; p++) {
+          const result = simulateEvalAttempt(winRate, avgWin, avgLoss, firm, rng);
+          if (result.passed) {
+            passCount++;
+            if (!samplePath) samplePath = result;
+          }
+        }
+        const passProb = passCount / PASSES;
+
+        // Funded phase: 2000 attempts (only if passProb > 0)
+        let fundedPayout = 0;
+        if (passProb > 0) {
+          let totalPayout = 0;
+          for (let p = 0; p < FUNDED_PASSES; p++) {
+            const fr = simulateFundedAttempt(winRate, avgWin, avgLoss, rng);
+            totalPayout += fr.payout;
+          }
+          fundedPayout = totalPayout / FUNDED_PASSES;
+        }
+
+        const evalCost = firm.account.eval_cost;
+        const activationFee = firm.activation_fee || 0;
+        const ev = passProb * fundedPayout - passProb * activationFee - evalCost;
+        const costToFunded = passProb > 0 ? evalCost / passProb + activationFee : Infinity;
+
+        return {
+          firm: firm,
+          passProb: passProb,
+          fundedPayout: fundedPayout,
+          expectedPayout: passProb * fundedPayout,
+          ev: ev,
+          costToFunded: costToFunded,
+          evalCost: evalCost,
+          activationFee: activationFee,
+          roiPct: evalCost > 0 ? (ev / evalCost) * 100 : 0
+        };
+      });
+
+      // Sort by EV descending
+      results.sort((a, b) => b.ev - a.ev);
+      console.timeEnd('EV simulation');
+      return results;
+    }
+
+    // Calculate derived stats
+    function calcStats(totalTrades, wins, avgWin, avgLoss) {
+      const losses = totalTrades - wins;
+      const winRate = wins / Math.max(totalTrades, 1);
+      const expectancy = winRate * avgWin - (1 - winRate) * avgLoss;
+      const profitFactor = losses > 0 ? (wins * avgWin) / (losses * avgLoss) : Infinity;
+      const rr = avgLoss > 0 ? avgWin / avgLoss : 0;
+      const totalPnl = wins * avgWin - losses * avgLoss;
+      // Max consecutive losses estimate (simple heuristic from win rate)
+      const maxConsecutive = Math.ceil(Math.log(1 - 0.95) / Math.log(Math.max(1 - winRate, 0.01)));
+      return {
+        totalTrades, wins, losses, winRate, avgWin, avgLoss,
+        expectancy, profitFactor, rr, totalPnl, maxConsecutive: Math.min(maxConsecutive, totalTrades)
+      };
+    }
+
+    // ============================================================
+    // UI
+    // ============================================================
+    const inputView = document.getElementById('input-view');
+    const resultsView = document.getElementById('results');
+    const calcBtn = document.getElementById('calc-btn');
+    const sampleBtn = document.getElementById('sample-btn');
+    const backBtn = document.getElementById('back-btn');
+    const errMsg = document.getElementById('err-msg');
+    const toggleEstimate = document.getElementById('toggle-estimate');
+    const exactMode = document.getElementById('exact-mode');
+    const estimateMode = document.getElementById('estimate-mode');
+    const estPreview = document.getElementById('est-preview');
+
+    let isEstimate = false;
+
+    // Estimate mode sliders
+    const sWr = document.getElementById('s-wr');
+    const sRr = document.getElementById('s-rr');
+    const sTrades = document.getElementById('s-trades');
+    const wrVal = document.getElementById('wr-val');
+    const rrVal = document.getElementById('rr-val');
+
+    function updateEstimatePreview() {
+      const wr = Number(sWr.value);
+      const rr = Number(sRr.value);
+      const trades = Number(sTrades.value);
+      const wins = Math.round(wr / 100 * trades);
+      // avgLoss fixed at $100, avgWin = rr * avgLoss
+      const avgLoss = 100;
+      const avgWin = Math.max(1, Math.round(100 * rr));
+      wrVal.textContent = wr + '%';
+      rrVal.textContent = rr.toFixed(2) + ' : 1';
+      estPreview.innerHTML = '<div style="font-weight:500;color:var(--text);margin-bottom:0.25rem;">We\'ll simulate with these:</div><div class="grid"><span>' + trades + ' trades</span><span>' + wins + ' wins</span><span>$' + avgWin + ' avg win</span><span>$' + avgLoss + ' avg loss</span></div>';
+    }
+
+    sWr.addEventListener('input', updateEstimatePreview);
+    sRr.addEventListener('input', updateEstimatePreview);
+    sTrades.addEventListener('change', updateEstimatePreview);
+
+    toggleEstimate.addEventListener('click', () => {
+      isEstimate = !isEstimate;
+      if (isEstimate) {
+        exactMode.style.display = 'none';
+        estimateMode.style.display = 'flex';
+        toggleEstimate.textContent = '↺ Switch to exact numbers';
+        updateEstimatePreview();
+      } else {
+        exactMode.style.display = 'grid';
+        estimateMode.style.display = 'none';
+        toggleEstimate.textContent = "Don't know your exact stats? Estimate →";
+      }
+    });
+
+    function getInputStats() {
+      if (isEstimate) {
+        const wr = Number(sWr.value);
+        const rr = Number(sRr.value);
+        const trades = Math.max(5, Math.round(Number(sTrades.value)));
+        const wins = Math.round(Math.min(95, Math.max(5, wr)) / 100 * trades);
+        const avgLoss = 100;
+        const avgWin = Math.max(1, Math.round(100 * rr));
+        return { totalTrades: trades, wins, avgWin, avgLoss };
+      } else {
+        const total = Number(document.getElementById('t-total').value);
+        const wins = Number(document.getElementById('t-wins').value);
+        const avgWin = Number(document.getElementById('t-avgwin').value);
+        const avgLoss = Number(document.getElementById('t-avgloss').value);
+        return { totalTrades: total, wins, avgWin, avgLoss };
+      }
+    }
+
+    function validate(stats) {
+      if (!Number.isFinite(stats.totalTrades) || stats.totalTrades < 5) return 'Enter at least 5 total trades.';
+      if (!Number.isFinite(stats.wins) || stats.wins < 0 || stats.wins > stats.totalTrades) return 'Wins must be between 0 and total trades.';
+      if (!Number.isFinite(stats.avgWin) || stats.avgWin <= 0) return 'Avg win must be greater than 0.';
+      if (!Number.isFinite(stats.avgLoss) || stats.avgLoss <= 0) return 'Avg loss must be greater than 0.';
+      return null;
+    }
+
+    function fmtMoney(n) {
+      if (!Number.isFinite(n)) return '—';
+      const sign = n < 0 ? '-' : '';
+      return sign + '$' + Math.abs(Math.round(n)).toLocaleString();
+    }
+
+    function fmtPct(n) {
+      return (n * 100).toFixed(1) + '%';
+    }
+
+    function renderResults(stats, ranking) {
+      // Stats grid
+      const sg = document.getElementById('stats-grid');
+      sg.innerHTML = [
+        ['TOTAL TRADES', stats.totalTrades],
+        ['WIN RATE', fmtPct(stats.winRate)],
+        ['AVG WIN', fmtMoney(stats.avgWin)],
+        ['AVG LOSS', fmtMoney(stats.avgLoss)],
+        ['EXPECTANCY/TRADE', fmtMoney(stats.expectancy)],
+        ['PROFIT FACTOR', stats.profitFactor === Infinity ? '∞' : stats.profitFactor.toFixed(2)],
+        ['AVG R:R', stats.rr.toFixed(2) + ' : 1'],
+        ['MAX LOSING STREAK', stats.maxConsecutive],
+      ].map(([l, v]) => `<div class="stat-card"><div class="lbl">${l}</div><div class="num">${v}</div></div>`).join('');
+
+      // Best fit header
+      document.getElementById('best-fit').textContent = 'Best fit: ' + ranking[0].firm.name;
+      const now = new Date();
+      document.getElementById('report-meta').textContent = `Based on ${stats.totalTrades} trades · generated ${now.toLocaleDateString()}, ${now.toLocaleTimeString()}`;
+
+      // Top match card
+      const top = ranking[0];
+      const tm = document.getElementById('top-match');
+      tm.innerHTML = `
+        <div class="badge">YOUR #1 RECOMMENDED FIRM</div>
+        <div class="firm-name">${top.firm.name}</div>
+        <div class="firm-summary">$${(top.firm.account.size/1000)}k account · pass prob ${fmtPct(top.passProb)} · avg cost to funded ${fmtMoney(top.costToFunded)}</div>
+        <div class="ev-box"><span class="lbl">EV / ATTEMPT</span><span class="val">${fmtMoney(top.ev)}</span></div>
+        <div class="why">${top.firm.notes}</div>
+        <a href="${top.firm.affiliate_url}" target="_blank" rel="noopener noreferrer" class="try-link">Try ${top.firm.name} →</a>
+      `;
+
+      // Full ranking table
+      document.getElementById('ranking-title').textContent = `Full ranking — ${ranking.length} firms`;
+      renderTable(ranking, 'ev');
+    }
+
+    function renderTable(ranking, sortKey) {
+      let sorted = ranking.slice();
+      if (sortKey === 'ev') {
+        sorted.sort((a, b) => b.ev - a.ev);
+      } else if (sortKey === 'size-asc') {
+        sorted.sort((a, b) => a.firm.account.size - b.firm.account.size || b.ev - a.ev);
+      } else if (sortKey === 'size-desc') {
+        sorted.sort((a, b) => b.firm.account.size - a.firm.account.size || b.ev - a.ev);
+      }
+      // Find new rank positions
+      const evOrder = ranking.slice().sort((a, b) => b.ev - a.ev);
+      const evRank = new Map(evOrder.map((r, i) => [r.firm.slug, i + 1]));
+
+      const html = `
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Firm</th>
+              <th>Account</th>
+              <th>Pass</th>
+              <th>Eval $</th>
+              <th>Cost/Funded</th>
+              <th>Exp. Payout</th>
+              <th>EV/Attempt</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map((r) => {
+              const rank = evRank.get(r.firm.slug);
+              const isTop = rank === 1;
+              const promoHtml = r.firm.promo_code ? `<span class="promo">CODE ${r.firm.promo_code}</span>` : '';
+              const passPct = (r.passProb * 100).toFixed(1);
+              const passWidth = Math.min(r.passProb * 100, 100);
+              return `<tr class="${isTop ? 'row-top' : ''}">
+                <td class="rank">${rank}</td>
+                <td class="firm-cell">${r.firm.name}${promoHtml}</td>
+                <td>$${(r.firm.account.size/1000)}k</td>
+                <td><span class="pass-bar"><span class="pass-fill" style="width:${passWidth}%"></span></span>${passPct}%</td>
+                <td>${fmtMoney(r.evalCost)}</td>
+                <td>${fmtMoney(r.costToFunded)}</td>
+                <td>${fmtMoney(r.fundedPayout)}</td>
+                <td class="ev-val">${fmtMoney(r.ev)}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      document.getElementById('ranking-table').innerHTML = html;
+    }
+
+    // Sort buttons
+    document.querySelectorAll('.sort-bar button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sort-bar button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (lastRanking) renderTable(lastRanking, btn.dataset.sort);
+      });
+    });
+
+    let lastRanking = null;
+
+    function runCalc(stats) {
+      const error = validate(stats);
+      if (error) {
+        errMsg.textContent = error;
+        return;
+      }
+      errMsg.textContent = '';
+      calcBtn.disabled = true;
+      calcBtn.textContent = 'Calculating…';
+
+      // Defer to next tick so UI updates
+      setTimeout(() => {
+        try {
+          const derived = calcStats(stats.totalTrades, stats.wins, stats.avgWin, stats.avgLoss);
+          const ranking = runSimulation(stats.totalTrades, stats.wins, stats.avgWin, stats.avgLoss);
+          lastRanking = ranking;
+          renderResults(derived, ranking);
+          inputView.style.display = 'none';
+          resultsView.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (e) {
+          console.error(e);
+          errMsg.textContent = 'Simulation error: ' + e.message;
+        } finally {
+          calcBtn.disabled = false;
+          calcBtn.textContent = 'Calculate My EV →';
+        }
+      }, 50);
+    }
+
+    calcBtn.addEventListener('click', () => {
+      const stats = getInputStats();
+      runCalc(stats);
+    });
+
+    // Sample data button — uses the PropFirmEV sample (50 trades, 29 wins, $181.14 avg win, $101.39 avg loss)
+    sampleBtn.addEventListener('click', () => {
+      const stats = { totalTrades: 50, wins: 29, avgWin: 181.14, avgLoss: 101.39 };
+      if (isEstimate) {
+        // Switch to exact mode and fill in the sample values
+        isEstimate = false;
+        exactMode.style.display = 'grid';
+        estimateMode.style.display = 'none';
+        toggleEstimate.textContent = "Don't know your exact stats? Estimate →";
+      }
+      document.getElementById('t-total').value = '50';
+      document.getElementById('t-wins').value = '29';
+      document.getElementById('t-avgwin').value = '181.14';
+      document.getElementById('t-avgloss').value = '101.39';
+      runCalc(stats);
+    });
+
+    backBtn.addEventListener('click', () => {
+      resultsView.style.display = 'none';
+      inputView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Init
+    updateEstimatePreview();
+    </script>
+  </body>
+</html>

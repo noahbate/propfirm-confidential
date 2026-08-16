@@ -1,6 +1,6 @@
 ---
 // /Users/hermes/projects/propfirm-confidential/prop-firm-app/src/pages/index.astro
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = 'https://prop-firm-api-bc7y.onrender.com';
 ---
 
 <html lang="en">
@@ -12,14 +12,21 @@ const BACKEND_URL = 'http://localhost:8000';
     <meta name="generator" content={Astro.generator} />
     <title>Prop Firm Confidential</title>
   </head>
-
   <body>
-    <main id="app" class="max-w-6xl mx-auto p-4 sm:p-6">
-      <h1 class="text-2xl font-semibold mb-4">Prop Firm Confidential</h1>
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-        <input id="search" placeholder="Search firms or accounts" class="border rounded px-3 py-2 w-full sm:w-80" />
-        <a href="/compare" class="text-sm underline">Compare firms</a>
-        <div class="text-sm text-gray-600">
+    <main class="max-w-6xl mx-auto p-4 sm:p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-semibold">Prop Firm Confidential</h1>
+        <div id="auth" class="flex items-center gap-2 text-sm"></div>
+      </div>
+      <div class="flex flex-col gap-3 mb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+          <input id="search" placeholder="Search firms or accounts" class="border rounded px-3 py-2 w-full sm:w-80" />
+          <label class="flex items-center gap-2 text-sm text-gray-700">
+            <input id="fav-only" type="checkbox" />
+            Favorites only
+          </label>
+        </div>
+        <div class="text-sm text-gray-600 flex flex-wrap gap-x-3 gap-y-1 items-center">
           Sort by:
           <button data-sort="account_size" class="underline">Account size</button> •
           <button data-sort="price" class="underline">Price</button> •
@@ -50,26 +57,28 @@ const BACKEND_URL = 'http://localhost:8000';
           </tbody>
         </table>
       </div>
+      <div class="mt-4 flex gap-4">
+        <a href="/compare" class="text-sm underline">Compare firms</a>
+        <a href="/ev-calculator" class="text-sm underline">EV Calculator</a>
+      </div>
     </main>
 
     <script is:inline>
-      const backendUrl = 'http://localhost:8000/api/prop-firms';
+      const BACKEND = 'https://prop-firm-api-bc7y.onrender.com';
       const rows = document.getElementById('rows');
       const searchInput = document.getElementById('search');
       const dirLabel = document.getElementById('dir');
-      let state = { items: [], sortKey: 'account_size', sortDir: 'asc' };
+      const favOnly = document.getElementById('fav-only');
+      const authEl = document.getElementById('auth');
 
-      function fmtNum(n) {
-        return typeof n === 'number' ? n : '—';
-      }
+      let state = { items: [], sortKey: 'account_size', sortDir: 'asc', token: null, user: null, favorites: [] };
 
-      function fmtSplit(n) {
-        return typeof n === 'number' ? Math.round(n * 100) + '%' : '—';
-      }
+      function fmtNum(n) { return typeof n === 'number' ? n : '—'; }
+      function fmtSplit(n) { return typeof n === 'number' ? Math.round(n * 100) + '%' : '—'; }
 
       function render(items) {
         rows.innerHTML = '';
-        if (items.length === 0) {
+        if (!items.length) {
           rows.innerHTML = '<tr><td colspan="9" class="px-4 py-4 text-center text-sm text-gray-500">No matching accounts.</td></tr>';
           return;
         }
@@ -77,6 +86,7 @@ const BACKEND_URL = 'http://localhost:8000';
         items.forEach((item) => {
           const tr = document.createElement('tr');
           tr.className = 'hover:bg-gray-50';
+          const isFav = state.favorites.includes(item.account_details.account_name) || state.favorites.includes(item.firm_information.firm_name);
           tr.innerHTML = `
             <td class="px-4 py-3 whitespace-nowrap">
               <div class="flex items-center gap-3">
@@ -87,7 +97,10 @@ const BACKEND_URL = 'http://localhost:8000';
                 </div>
               </div>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${item.account_details.account_name}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+              <span class="${isFav ? 'font-semibold' : ''}">${item.account_details.account_name}</span>
+              ${isFav ? '<span class="ml-2 text-xs text-yellow-600">★</span>' : ''}
+            </td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.price)}</td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.sale_price)}</td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtSplit(item.account_details.profit_split)}</td>
@@ -96,26 +109,156 @@ const BACKEND_URL = 'http://localhost:8000';
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${fmtNum(item.account_details.activation_fee)}</td>
             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">${item.account_details.drawdown_type}</td>
           `;
+          tr.addEventListener('click', () => toggleFavorite(item));
+          tr.style.cursor = state.user ? 'pointer' : 'default';
           frag.appendChild(tr);
         });
         rows.appendChild(frag);
       }
 
+      async function api(path, opts = {}) {
+        const headers = Object.assign({}, opts.headers || {}, {
+          'Content-Type': 'application/json',
+        });
+        if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
+        const res = await fetch(BACKEND + path, Object.assign({}, opts, { headers }));
+        if (opts.parseJson === false) return res;
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok)
+          throw new Error(data && (data.detail || data.error) || ('Request failed: ' + res.status));
+        return data;
+      }
+
+      async function toggleFavorite(item) {
+        if (!state.user) { promptLogin(); return; }
+        const firmId = item.firm_information.firm_name;
+        const accountName = item.account_details.account_name;
+        const existing = (state.favorites || []).find(f => f === accountName || f === firmId);
+        try {
+          if (existing) {
+            const payload = await api('/auth/favorites/' + encodeURIComponent(state.user.id) + '/' + encodeURIComponent(existing), { method: 'DELETE' });
+            state.favorites = payload.favorites;
+          } else {
+            const payload = await api('/auth/favorites/' + encodeURIComponent(state.user.id), { method: 'POST', body: JSON.stringify({ firm_id: firmId }) });
+            state.favorites = payload.favorites;
+          }
+          apply();
+        } catch (e) {
+          console.error(e);
+          alert('Could not update favorite.');
+        }
+      }
+
+      function promptLogin() {
+        if (document.getElementById('auth-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'auth-modal';
+        modal.className = 'fixed inset-0 bg-gray-700/50 flex items-center justify-center';
+        modal.innerHTML = `
+          <div class="bg-white rounded shadow-lg p-5 w-full max-w-sm">
+            <h3 class="text-lg font-semibold mb-2">Sign in</h3>
+            <form id="login-form" class="flex flex-col gap-2">
+              <input type="email" id="login-email" required placeholder="Email" class="border rounded px-3 py-2" />
+              <input type="password" id="login-password" required placeholder="Password" class="border rounded px-3 py-2" />
+              <input type="text" id="login-name" placeholder="Name (optional)" class="border rounded px-3 py-2" />
+              <button type="submit" class="bg-gray-900 text-white rounded px-3 py-2">Sign up / Sign in</button>
+            </form>
+            <p class="mt-2 text-xs text-gray-500">This uses a temporary account store for saved preferences only.</p>
+            <button id="auth-close" class="mt-3 text-sm text-gray-600 underline">Close</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('auth-close').addEventListener('click', () => modal.remove());
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const email = document.getElementById('login-email').value.trim();
+          const password = document.getElementById('login-password').value.trim();
+          const name = document.getElementById('login-name').value.trim() || email;
+          try {
+            const res = await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+            if (!res.token) throw new Error('Login response missing token');
+            state.token = res.token;
+            state.user = { id: res.user_id, name: res.name };
+            loadFavoritesSync();
+            renderAuth();
+            apply();
+          } catch (err) {
+            await api('/auth/register', { method: 'POST', body: JSON.stringify({ email, password, name }) }).then((res) => {
+              state.token = res.token;
+              state.user = { id: res.user_id, name: res.name };
+              loadFavoritesSync();
+              renderAuth();
+              apply();
+            }).catch(() => { alert(err.message || 'Authentication failed'); });
+          }
+          modal.remove();
+        });
+      }
+
+      async function loadFavoritesSync() {
+        if (!state.user) return;
+        try {
+          const favs = await api('/auth/favorites/' + encodeURIComponent(state.user.id));
+          state.favorites = favs.favorites || [];
+        } catch (e) {
+          state.favorites = [];
+        }
+      }
+
+      function logout() {
+        state.token = null;
+        state.user = null;
+        state.favorites = [];
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('auth_user');
+        renderAuth();
+        apply();
+      }
+
+      function renderAuth() {
+        authEl.innerHTML = '';
+        if (state.user) {
+          authEl.innerHTML = '<span class="text-gray-700">Signed in as <strong>' + state.user.name + '</strong></span> <button id="logout" class="ml-2 underline">Sign out</button>';
+          document.getElementById('logout').addEventListener('click', logout);
+        } else {
+          const btn = document.createElement('button');
+          btn.className = 'border rounded px-2 py-1';
+          btn.textContent = 'Sign in';
+          btn.addEventListener('click', promptLogin);
+          authEl.appendChild(btn);
+        }
+      }
+
       function sortKey(key) {
         state.sortDir = state.sortKey === key && state.sortDir === 'asc' ? 'desc' : 'asc';
         state.sortKey = key;
-        dirLabel.textContent = `(${state.sortDir})`;
+        dirLabel.textContent = '(' + state.sortDir + ')';
         apply();
       }
 
       function apply() {
         const q = (searchInput.value || '').trim().toLowerCase();
-        const list = state.items.filter((item) => {
-          if (!q) return true;
-          const text = [item.firm_information.firm_name, item.account_details.account_name].join(' ').toLowerCase();
-          return text.includes(q);
-        });
-        list.sort((a, b) => {
+        let list = state.items;
+        const onlyFav = favOnly.checked;
+        const f = new Set(state.favorites);
+        if (onlyFav && f.size) {
+          list = list.filter((item) => {
+            const firm = item.firm_information.firm_name;
+            const account = item.account_details.account_name;
+            return f.has(firm) || f.has(account);
+          });
+        }
+        if (q) {
+          list = list.filter((item) => {
+            if (onlyFav && f.size && !f.has(item.firm_information.firm_name) && !f.has(item.account_details.account_name)) {
+              return false;
+            }
+            const text = item.firm_information.firm_name + ' ' + item.account_details.account_name;
+            return text.toLowerCase().includes(q);
+          });
+        }
+        list = list.slice().sort((a, b) => {
           const av = a.account_details[state.sortKey];
           const bv = b.account_details[state.sortKey];
           const aNum = typeof av === 'number' ? av : 0;
@@ -126,9 +269,22 @@ const BACKEND_URL = 'http://localhost:8000';
       }
 
       async function init() {
-        const res = await fetch(backendUrl);
+        const res = await fetch(BACKEND + '/api/prop-firms');
         const data = await res.json();
         state.items = Array.isArray(data) ? data : [];
+        const savedToken = localStorage.getItem('auth_token');
+        const savedUser = localStorage.getItem('auth_user');
+        if (savedToken && savedUser) {
+          state.token = savedToken;
+          state.user = JSON.parse(savedUser);
+          await loadFavoritesSync();
+        }
+        window.addEventListener('storage', (e) => {
+          if (e.key === 'auth_user') {
+            state.user = e.newValue ? JSON.parse(e.newValue) : null;
+          }
+        });
+        renderAuth();
         apply();
       }
 
@@ -136,8 +292,11 @@ const BACKEND_URL = 'http://localhost:8000';
       document.querySelectorAll('[data-sort]').forEach((btn) => {
         btn.addEventListener('click', () => sortKey(btn.dataset.sort));
       });
+      favOnly.addEventListener('change', apply);
       init();
     </script>
     <script is:inline>
-      window.__BACKEND_URL__ = 'http://localhost:8000';
+      window.__BACKEND_URL__ = BACKEND;
     </script>
+  </body>
+</html>

@@ -1,0 +1,1004 @@
+{
+  "last_run": {
+    "date": "2026-08-16",
+    "status": "ok",
+    "firm_count": 28,
+    "flag_count": 0,
+    "duration_seconds": 5.43
+  },
+  "firm_state": {
+    "apex-trader-funding": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "topstep": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "take-profit-trader": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "my-funded-futures": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "bulenox": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "trade-day": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "earn2trade": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "ticktick-trader": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "trading-lucid": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "fundingpips": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "bright-funded": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "lark-funding": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "funded-trading-p": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "blue-guardian": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "alpha-futures": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "top-one-futures": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "funded-family": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    },
+    "futures-elite": {
+      "last_volume": 0,
+      "last_flags": [],
+      "last_score": 0.0,
+      "last_date": "2026-08-16"
+    }
+  },
+  "gates": {
+    "soft_skip": false,
+    "hard_pass": true,
+    "last_check": "2026-08-16T01:01:42.954851Z"
+  },
+  "history": [
+    {
+      "date": "2026-07-27",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-07-28",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-07-29",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-07-30",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-07-31",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-01",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-03",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-04",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-05",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-06",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-07",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-08",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-09",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-10",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-11",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-12",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-13",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-14",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-15",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-16",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    }
+  ],
+  "notion_sync": {
+    "2026-07-11": {
+      "attempted": 3,
+      "succeeded": 1,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4a1a7",
+          "type": "paragraph",
+          "status": 404
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-12": {
+      "attempted": 3,
+      "succeeded": 1,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4a1a7",
+          "type": "paragraph",
+          "status": 404
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-13": {
+      "attempted": 3,
+      "succeeded": 1,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4a1a7",
+          "type": "paragraph",
+          "status": 404
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-14": {
+      "attempted": 3,
+      "succeeded": 1,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4a1a7",
+          "type": "paragraph",
+          "status": 404
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-15": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-16": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-17": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-18": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-19": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-20": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-21": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-22": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-23": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-24": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-25": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-26": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-27": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-28": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-29": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-30": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-07-31": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-01": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-03": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-04": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-05": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-06": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-07": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-08": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-09": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-10": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-11": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-12": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-13": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-14": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-15": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-16": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    }
+  }
+}

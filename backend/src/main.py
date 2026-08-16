@@ -4,8 +4,10 @@ from fastapi.responses import JSONResponse
 import json
 from pathlib import Path
 import os
+from auth_routes import router as auth_router
 
 app = FastAPI()
+app.include_router(auth_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

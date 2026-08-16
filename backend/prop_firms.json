@@ -7,23 +7,409 @@
       "location": "USA"
     },
     "account_details": {
-      "account_name": "25K Intraday",
+      "account_name": "25K Intraday Trail",
       "account_size": 25000,
-      "price": 199,
-      "sale_price": 19.9,
-      "profit_split": 1,
+      "price": 147,
+      "sale_price": 14.7,
+      "profit_split": 1.0,
       "profit_target": 1500,
-      "daily_drawdown": 1000,
-      "max_drawdown": 1000,
+      "daily_drawdown": null,
+      "max_drawdown": 1500,
       "drawdown_type": "Trailing",
-      "activation_fee": 69
+      "activation_fee": 89
     },
     "rules_and_parameters": {
       "min_trading_days": 1,
       "max_trading_days": 30,
-      "allowed_instruments": ["Futures"],
+      "allowed_instruments": [
+        "Futures"
+      ],
       "scaling_plan": true
-    }
+    },
+    "firm_slug": "apex-trader-funding"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Apex Trader Funding",
+      "firm_logo_url": "https://example.com/apex.png",
+      "firm_url": "https://apextraderfunding.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "50K Intraday Trail",
+      "account_size": 50000,
+      "price": 167,
+      "sale_price": 16.7,
+      "profit_split": 1.0,
+      "profit_target": 3000,
+      "daily_drawdown": null,
+      "max_drawdown": 2500,
+      "drawdown_type": "Trailing",
+      "activation_fee": 130
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 1,
+      "max_trading_days": 30,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": true
+    },
+    "firm_slug": "apex-trader-funding"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Apex Trader Funding",
+      "firm_logo_url": "https://example.com/apex.png",
+      "firm_url": "https://apextraderfunding.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "100K Intraday Trail",
+      "account_size": 100000,
+      "price": 207,
+      "sale_price": 20.7,
+      "profit_split": 1.0,
+      "profit_target": 6000,
+      "daily_drawdown": null,
+      "max_drawdown": 3000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 130
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 1,
+      "max_trading_days": 30,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": true
+    },
+    "firm_slug": "apex-trader-funding"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Apex Trader Funding",
+      "firm_logo_url": "https://example.com/apex.png",
+      "firm_url": "https://apextraderfunding.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "150K Intraday Trail",
+      "account_size": 150000,
+      "price": 297,
+      "sale_price": 29.7,
+      "profit_split": 1.0,
+      "profit_target": 9000,
+      "daily_drawdown": null,
+      "max_drawdown": 5000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 130
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 1,
+      "max_trading_days": 30,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": true
+    },
+    "firm_slug": "apex-trader-funding"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Topstep",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.topstep.com"
+      ],
+      "firm_url": "https://www.topstep.com/topstep-prop",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "50K Portfolio",
+      "account_size": 50000,
+      "price": 49,
+      "sale_price": 49,
+      "profit_split": 0.9,
+      "profit_target": 3000,
+      "daily_drawdown": 1000,
+      "max_drawdown": 2000,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "topstep"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Topstep",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.topstep.com"
+      ],
+      "firm_url": "https://www.topstep.com/topstep-prop",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "100K Portfolio",
+      "account_size": 100000,
+      "price": 99,
+      "sale_price": 99,
+      "profit_split": 0.9,
+      "profit_target": 6000,
+      "daily_drawdown": 2000,
+      "max_drawdown": 3000,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "topstep"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Topstep",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.topstep.com"
+      ],
+      "firm_url": "https://www.topstep.com/topstep-prop",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "150K Portfolio",
+      "account_size": 150000,
+      "price": 149,
+      "sale_price": 149,
+      "profit_split": 0.9,
+      "profit_target": 9000,
+      "daily_drawdown": 3000,
+      "max_drawdown": 4500,
+      "drawdown_type": "Static",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "topstep"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Take Profit Trader",
+      "firm_logo_url": "https://example.com/tpt.png",
+      "firm_url": "https://takeprofittrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "25K",
+      "account_size": 25000,
+      "price": 150,
+      "sale_price": 150,
+      "profit_split": 0.8,
+      "profit_target": 1500,
+      "daily_drawdown": null,
+      "max_drawdown": 1500,
+      "drawdown_type": "Trailing",
+      "activation_fee": 130
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "take-profit-trader"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Take Profit Trader",
+      "firm_logo_url": "https://example.com/tpt.png",
+      "firm_url": "https://takeprofittrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "50K",
+      "account_size": 50000,
+      "price": 170,
+      "sale_price": 170,
+      "profit_split": 0.8,
+      "profit_target": 3000,
+      "daily_drawdown": null,
+      "max_drawdown": 2000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 150
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "take-profit-trader"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Take Profit Trader",
+      "firm_logo_url": "https://example.com/tpt.png",
+      "firm_url": "https://takeprofittrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "100K",
+      "account_size": 100000,
+      "price": 250,
+      "sale_price": 250,
+      "profit_split": 0.8,
+      "profit_target": 6000,
+      "daily_drawdown": null,
+      "max_drawdown": 3000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 150
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "take-profit-trader"
+  },
+  {
+    "firm_information": {
+      "firm_name": "Take Profit Trader",
+      "firm_logo_url": "https://example.com/tpt.png",
+      "firm_url": "https://takeprofittrader.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "150K",
+      "account_size": 150000,
+      "price": 350,
+      "sale_price": 350,
+      "profit_split": 0.8,
+      "profit_target": 9000,
+      "daily_drawdown": null,
+      "max_drawdown": 5000,
+      "drawdown_type": "Trailing",
+      "activation_fee": 250
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 5,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "take-profit-trader"
+  },
+  {
+    "firm_information": {
+      "firm_name": "My Funded Futures",
+      "firm_logo_url": "https://example.com/mff.png",
+      "firm_url": "https://myfundedfutures.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "50K Starter",
+      "account_size": 50000,
+      "price": 100,
+      "sale_price": 100,
+      "profit_split": 0.9,
+      "profit_target": 3000,
+      "daily_drawdown": null,
+      "max_drawdown": 2000,
+      "drawdown_type": "EOD",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 2,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "my-funded-futures"
+  },
+  {
+    "firm_information": {
+      "firm_name": "My Funded Futures",
+      "firm_logo_url": "https://example.com/mff.png",
+      "firm_url": "https://myfundedfutures.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "100K Starter",
+      "account_size": 100000,
+      "price": 180,
+      "sale_price": 180,
+      "profit_split": 0.9,
+      "profit_target": 6000,
+      "daily_drawdown": null,
+      "max_drawdown": 3000,
+      "drawdown_type": "EOD",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 2,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "my-funded-futures"
+  },
+  {
+    "firm_information": {
+      "firm_name": "My Funded Futures",
+      "firm_logo_url": "https://example.com/mff.png",
+      "firm_url": "https://myfundedfutures.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "150K Starter",
+      "account_size": 150000,
+      "price": 280,
+      "sale_price": 280,
+      "profit_split": 0.9,
+      "profit_target": 9000,
+      "daily_drawdown": null,
+      "max_drawdown": 5000,
+      "drawdown_type": "EOD",
+      "activation_fee": 0
+    },
+    "rules_and_parameters": {
+      "min_trading_days": 2,
+      "max_trading_days": null,
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "my-funded-futures"
   },
   {
     "firm_information": {
@@ -47,61 +433,12 @@
     "rules_and_parameters": {
       "min_trading_days": null,
       "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
+      "allowed_instruments": [
+        "Futures"
+      ],
       "scaling_plan": false
-    }
-  },
-  {
-    "firm_information": {
-      "firm_name": "Topstep",
-      "firm_logo_url": "https://example.com/topstep.png",
-      "firm_url": "https://topstep.com/",
-      "location": "USA"
     },
-    "account_details": {
-      "account_name": "50K",
-      "account_size": 50000,
-      "price": 85,
-      "sale_price": 85,
-      "profit_split": 0.9,
-      "profit_target": 3000,
-      "daily_drawdown": 1000,
-      "max_drawdown": 2000,
-      "drawdown_type": "Static",
-      "activation_fee": 0
-    },
-    "rules_and_parameters": {
-      "min_trading_days": null,
-      "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
-      "scaling_plan": false
-    }
-  },
-  {
-    "firm_information": {
-      "firm_name": "Take Profit Trader",
-      "firm_logo_url": "https://example.com/tpt.png",
-      "firm_url": "https://takeprofittrader.com/",
-      "location": "USA"
-    },
-    "account_details": {
-      "account_name": "25K",
-      "account_size": 25000,
-      "price": 150,
-      "sale_price": 150,
-      "profit_split": 0.8,
-      "profit_target": 1500,
-      "daily_drawdown": null,
-      "max_drawdown": 2000,
-      "drawdown_type": "Trailing",
-      "activation_fee": 130
-    },
-    "rules_and_parameters": {
-      "min_trading_days": 5,
-      "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
-      "scaling_plan": false
-    }
+    "firm_slug": "bulenox"
   },
   {
     "firm_information": {
@@ -125,35 +462,12 @@
     "rules_and_parameters": {
       "min_trading_days": 5,
       "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
+      "allowed_instruments": [
+        "Futures"
+      ],
       "scaling_plan": false
-    }
-  },
-  {
-    "firm_information": {
-      "firm_name": "My Funded Futures",
-      "firm_logo_url": "https://example.com/mff.png",
-      "firm_url": "https://myfundedfutures.com/",
-      "location": "USA"
     },
-    "account_details": {
-      "account_name": "50K",
-      "account_size": 50000,
-      "price": 126,
-      "sale_price": 126,
-      "profit_split": 0.9,
-      "profit_target": 3000,
-      "daily_drawdown": null,
-      "max_drawdown": 2000,
-      "drawdown_type": "EOD",
-      "activation_fee": 0
-    },
-    "rules_and_parameters": {
-      "min_trading_days": 2,
-      "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
-      "scaling_plan": false
-    }
+    "firm_slug": "trade-day"
   },
   {
     "firm_information": {
@@ -177,9 +491,13 @@
     "rules_and_parameters": {
       "min_trading_days": 10,
       "max_trading_days": null,
-      "allowed_instruments": ["Futures", "Forex"],
+      "allowed_instruments": [
+        "Futures",
+        "Forex"
+      ],
       "scaling_plan": true
-    }
+    },
+    "firm_slug": "earn2trade"
   },
   {
     "firm_information": {
@@ -203,9 +521,12 @@
     "rules_and_parameters": {
       "min_trading_days": null,
       "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
+      "allowed_instruments": [
+        "Futures"
+      ],
       "scaling_plan": false
-    }
+    },
+    "firm_slug": "ticktick-trader"
   },
   {
     "firm_information": {
@@ -229,7 +550,269 @@
     "rules_and_parameters": {
       "min_trading_days": 1,
       "max_trading_days": null,
-      "allowed_instruments": ["Futures"],
+      "allowed_instruments": [
+        "Futures"
+      ],
+      "scaling_plan": false
+    },
+    "firm_slug": "trading-lucid"
+  },
+  {
+    "firm_slug": "fundingpips",
+    "firm_information": {
+      "firm_name": "FundingPips",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/fundingpips.com"
+      ],
+      "firm_url": "https://fundingpips.com/",
+      "location": "UAE"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "bright-funded",
+    "firm_information": {
+      "firm_name": "Bright Funded",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/brightfunded.com"
+      ],
+      "firm_url": "https://brightfunded.com/",
+      "location": "UAE"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "lark-funding",
+    "firm_information": {
+      "firm_name": "Lark Funding",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/larkfunding.com"
+      ],
+      "firm_url": "https://larkfunding.com/",
+      "location": "UK"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "funded-trading-p",
+    "firm_information": {
+      "firm_name": "Funded Trading Plus",
+      "firm_logo_url": "https://example.com/fundedtradingplus.png",
+      "firm_url": "",
+      "location": ""
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "blue-guardian",
+    "firm_information": {
+      "firm_name": "Blue Guardian",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.blueguardian.com"
+      ],
+      "firm_url": "https://www.blueguardian.com/",
+      "location": "UK"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "alpha-futures",
+    "firm_information": {
+      "firm_name": "Alpha Futures",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/alpha-futures.com"
+      ],
+      "firm_url": "https://alpha-futures.com/",
+      "location": "UK"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "top-one-futures",
+    "firm_information": {
+      "firm_name": "Top One Futures",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.toponefutures.com"
+      ],
+      "firm_url": "https://www.toponefutures.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "funded-family",
+    "firm_information": {
+      "firm_name": "Funded Family",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/www.fundedfuturesfamily.com"
+      ],
+      "firm_url": "https://www.fundedfuturesfamily.com/",
+      "location": "USA"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
+      "scaling_plan": false
+    }
+  },
+  {
+    "firm_slug": "futures-elite",
+    "firm_information": {
+      "firm_name": "Futures Elite",
+      "firm_logo_url": [
+        "https://logo.clearbit.com/futureselite.com"
+      ],
+      "firm_url": "https://futureselite.com/",
+      "location": "Italy"
+    },
+    "account_details": {
+      "account_name": "",
+      "account_size": null,
+      "price": null,
+      "sale_price": null,
+      "profit_split": null,
+      "profit_target": null,
+      "daily_drawdown": null,
+      "max_drawdown": null,
+      "drawdown_type": "",
+      "activation_fee": null
+    },
+    "rules_and_parameters": {
+      "min_trading_days": null,
+      "max_trading_days": null,
+      "allowed_instruments": [],
       "scaling_plan": false
     }
   }

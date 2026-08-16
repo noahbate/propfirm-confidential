@@ -10,9 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: prop-firm-app
     steps:
       - uses: actions/checkout@v4
 
@@ -23,8 +20,10 @@ jobs:
           cache-dependency-path: prop-firm-app/package-lock.json
 
       - name: Install dependencies
+        working-directory: prop-firm-app
         run: npm ci
 
+      # Deploy from repo root: project rootDirectory (prop-firm-app) is applied by the CLI.
       - name: Deploy to Vercel (production)
         run: npx vercel@latest --prod --yes --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
         env:

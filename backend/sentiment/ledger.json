@@ -1,133 +1,127 @@
 {
   "last_run": {
-    "date": "2026-08-16",
+    "date": "2026-08-17",
     "status": "ok",
     "firm_count": 28,
     "flag_count": 0,
-    "duration_seconds": 5.43
+    "duration_seconds": 4.95
   },
   "firm_state": {
     "apex-trader-funding": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "topstep": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "take-profit-trader": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "my-funded-futures": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "bulenox": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "trade-day": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "earn2trade": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "ticktick-trader": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "trading-lucid": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "fundingpips": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "bright-funded": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "lark-funding": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "funded-trading-p": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "blue-guardian": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "alpha-futures": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "top-one-futures": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "funded-family": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     },
     "futures-elite": {
       "last_volume": 0,
       "last_flags": [],
       "last_score": 0.0,
-      "last_date": "2026-08-16"
+      "last_date": "2026-08-17"
     }
   },
   "gates": {
     "soft_skip": false,
     "hard_pass": true,
-    "last_check": "2026-08-16T01:01:42.954851Z"
+    "last_check": "2026-08-17T01:01:03.860738Z"
   },
   "history": [
-    {
-      "date": "2026-07-27",
-      "status": "ok",
-      "firm_count": 28,
-      "flag_count": 0
-    },
     {
       "date": "2026-07-28",
       "status": "ok",
@@ -238,6 +232,12 @@
     },
     {
       "date": "2026-08-16",
+      "status": "ok",
+      "firm_count": 28,
+      "flag_count": 0
+    },
+    {
+      "date": "2026-08-17",
       "status": "ok",
       "firm_count": 28,
       "flag_count": 0
@@ -980,6 +980,27 @@
       ]
     },
     "2026-08-16": {
+      "attempted": 3,
+      "succeeded": 2,
+      "results": [
+        {
+          "id": "384c1bf1-d40f-816f-a331-e62a1ac4f1a7",
+          "type": "paragraph",
+          "status": 200
+        },
+        {
+          "id": "384c1bf1-d40f-8107-a44e-cc3f31d2e528",
+          "type": "to_do",
+          "status": 400
+        },
+        {
+          "id": "384c1bf1-d40f-8131-9b5e-cf4e287b92ef",
+          "type": "bulleted_list_item",
+          "status": 200
+        }
+      ]
+    },
+    "2026-08-17": {
       "attempted": 3,
       "succeeded": 2,
       "results": [

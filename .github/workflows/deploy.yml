@@ -1,4 +1,4 @@
-name: Deploy to Vercel (prop-firm-app)
+name: Deploy to Vercel (server-side git build)
 
 on:
   push:
@@ -11,24 +11,38 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: prop-firm-app/package-lock.json
-
-      - name: Install dependencies
-        working-directory: prop-firm-app
-        run: npm ci
-
-      # Deploy from inside the app dir; project rootDirectory is unset so the CLI
-      # deploys exactly this directory.
-      - name: Deploy to Vercel (production)
-        working-directory: prop-firm-app
-        run: npx vercel@latest --prod --yes --token "$VERCEL_TOKEN" --scope "$VERCEL_ORG_ID"
+      - name: Trigger Vercel server-side deployment
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          echo "Creating deployment from gitSource (repoId 1269395737, ref main)..."
+          RESP=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name":"propfirmconfidential",
+              "project":"prj_spJDucLgnMOBxlNfr6hFcbTtTVX9",
+              "target":"production",
+              "gitSource":{"type":"github","repoId":1269395737,"ref":"main"}
+            }')
+          DEPLOY_ID=$(echo "$RESP" | jq -r '.id')
+          DEPLOY_URL=$(echo "$RESP" | jq -r '.url')
+          echo "deployment: $DEPLOY_ID"
+          echo "url: $DEPLOY_URL"
+          echo "deploy_id=$DEPLOY_ID" >> "$GITHUB_OUTPUT"
+
+          # Poll until READY or ERROR
+          echo "Polling deployment..."
+          for i in $(seq 1 30); do
+            STATE=$(curl -s "https://api.vercel.com/v13/deployments/$DEPLOY_ID" \
+              -H "Authorization: Bearer $VERCEL_TOKEN" | jq -r '.readyState')
+            echo "state[$i]: $STATE"
+            case "$STATE" in
+              READY)    echo "✅ Deploy READY — $DEPLOY_URL"; exit 0 ;;
+              ERROR)    echo "❌ Deploy ERROR — $(curl -s 'https://api.vercel.com/v13/deployments/$DEPLOY_ID' -H 'Authorization: Bearer $VERCEL_TOKEN' | jq -r '.errorMessage')"; exit 1 ;;
+              CANCELED) echo "⚠️ Deploy canceled"; exit 1 ;;
+            esac
+            sleep 20
+          done
+          echo "⏰ Timed out waiting for deploy"; exit 1
+        id: vercel
